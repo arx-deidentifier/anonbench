@@ -15,7 +15,7 @@ It provides an implementation of the following algorithms:
 
 3. [Incognito](http://dx.doi.org/10.1145/1066157.1066164) - [(Implementation)](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmIncognito.java)
 
-4. [Optimal Lattice Anonymization](http://dx.doi.org/10.1197/jamia.M3144) - [(Implementation)](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmOLA.java)
+4. [Optimal Lattice Anonymization](http://dx.doi.org/10.1197/jamia.M3144), [implementation details](http://dx.doi.org/10.1109/CBMS.2012.6266366) - [(Implementation)](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmOLA.java)
 
 5. [Flash](http://dx.doi.org/10.1109/SocialCom-PASSAT.2012.52) - [(Implementation)](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmFlash.java)
 
