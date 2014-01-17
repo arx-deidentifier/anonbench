@@ -1,0 +1,13 @@
+;;;;;
+;Adult;Cup;Fars;Atus;Ihis
+[k];Flash (30%) DFS;Flash (33%) OLA;Flash (39%) DFS;DFS (68%) Flash;DFS (46%) Flash
+[l];Flash (55%) OLA;OLA (29%) Flash;Flash (33%) OLA;Flash (36%) OLA;Flash (11%) DFS
+[t];Flash (29%) OLA;OLA (34%) Flash;Flash (18%) OLA;Flash (16%) DFS;Flash (32%) DFS
+[d];Flash (38%) DFS;Flash (31%) OLA;Flash (27%) OLA;DFS (49%) Flash;DFS (46%) Flash
+[k, l];Flash (57%) OLA;OLA (25%) Flash;Flash (41%) OLA;Flash (36%) OLA;Flash (20%) DFS
+[k, t];Flash (29%) OLA;OLA (46%) Flash;Flash (2%) OLA;Flash (23%) DFS;Flash (34%) DFS
+[k, d];Flash (35%) DFS;Flash (41%) OLA;Flash (25%) OLA;DFS (40%) Flash;DFS (34%) Flash
+[d, l];Flash (50%) OLA;Flash (30%) OLA;Flash (1%) OLA;Flash (43%) DFS;Flash (54%) DFS
+[d, t];Flash (26%) OLA;Flash (18%) OLA;OLA (8%) Flash;OLA (7%) Flash;Flash (73%) DFS
+[k, d, l];Flash (55%) OLA;Flash (28%) OLA;Flash (7%) OLA;Flash (41%) DFS;Flash (54%) DFS
+[k, d, t];Flash (25%) OLA;OLA (15%) Flash;OLA (8%) Flash;OLA (6%) Flash;Flash (73%) DFS
