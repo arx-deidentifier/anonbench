@@ -9,15 +9,15 @@ This project contains the source code for the benchmark presented in our submiss
 
 It provides an implementation of the following algorithms:
 
-1. Depth-First-Search [(Link)](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmDFS.java)
+1. Depth-First-Search [Link](http://en.wikipedia.org/wiki/Depth-first_search) - [(Implementation)](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmDFS.java)
 
-2. Breadth-First-Search [(Link)](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmBFS.java)
+2. Breadth-First-Search [Link](http://en.wikipedia.org/wiki/Breadth-first_search) - [(Implementation)](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmBFS.java)
 
-3. Incognito [(Link)](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmIncognito.java)
+3. Incognito [Link](http://dx.doi.org/10.1145/1066157.1066164) - [(Implementation)](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmIncognito.java)
 
-4. Optimal Lattice Anonymization [(Link)](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmOLA.java)
+4. Optimal Lattice Anonymization [Link](http://dx.doi.org/10.1197/jamia.M3144) - [(Implementation)](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmOLA.java)
 
-5. Flash [(Link)](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmFlash.java)
+5. Flash [Link](http://dx.doi.org/10.1109/SocialCom-PASSAT.2012.52) - [(Implementation)](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmFlash.java)
 
 All algorithms are implemented within the [ARX framework](http://arx.deidentifier.org/) and the benchmark uses the [SUBFRAME](https://github.com/prasser/subframe) library.
 
