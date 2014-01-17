@@ -1,6 +1,3 @@
-A Benchmark of Globally-Optimal Anonymization Methods for Biomedical Data
-====
-
 Introduction
 ------
 This project contains the source code for the benchmark presented in our submission
@@ -11,16 +8,16 @@ The source code comprises our benchmarking environment, which is based upon
 the [ARX](http://arx.deidentifier.org/) and [subframe](https://github.com/prasser/subframe) 
 frameworks. Moreover, the repository contains implementations of the following algorithms:
 
-1. [Depth-First-Search](http://en.wikipedia.org/wiki/Depth-first_search): the implementation can be found [here](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmDFS.java)
+1. [Depth-First-Search](http://en.wikipedia.org/wiki/Depth-first_search): the implementation can be found [here](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmDFS.java).
 
-2. [Breadth-First-Search](http://en.wikipedia.org/wiki/Breadth-first_search): the implementation can be found [here](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmBFS.java)
+2. [Breadth-First-Search](http://en.wikipedia.org/wiki/Breadth-first_search): the implementation can be found [here](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmBFS.java).
 
-3. [Incognito](http://dx.doi.org/10.1145/1066157.1066164): the implementation can be found [here](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmIncognito.java)
+3. [Incognito](http://dx.doi.org/10.1145/1066157.1066164): the implementation can be found [here](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmIncognito.java).
 
 4. [Optimal Lattice Anonymization](http://dx.doi.org/10.1197/jamia.M3144): implementation details are presented in this [paper](http://dx.doi.org/10.1109/CBMS.2012.6266366)
-   and the implementation can be found [here](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmOLA.java)
+   and the implementation can be found [here](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmOLA.java).
 
-5. [Flash](http://dx.doi.org/10.1109/SocialCom-PASSAT.2012.52): the implementation can be found [here](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmFlash.java)
+5. [Flash](http://dx.doi.org/10.1109/SocialCom-PASSAT.2012.52): the implementation can be found [here](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmFlash.java).
 
 
 Results
