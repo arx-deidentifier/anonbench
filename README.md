@@ -40,6 +40,11 @@ For licensing reasons no data is contained in this repository. Please contact ar
 Results
 ------
 
+The following figures show key parameters averaged over either the datasets or the privacy 
+criteria. The number of checks gives an indication of an algorithm's pruning power, the 
+number of rollups gives an indication of an algorithm's optimizability and, finally, the 
+execution times gives an indication of an algorithm's overall performance.
+
 On a Desktop PC with a quad-core 3.1 GHz Intel Core i5 CPU running a 64-bit Linux 3.0.14 kernel and a
 64-bit Sun JVM (1.7.0 21) executed with *java -Xmx4G -XX:+UseConcMarkSweepGC -jar anonbench-0.1.jar* the following results are produced:
 
@@ -53,8 +58,6 @@ Geometric mean of key parameters over all eleven combinations of privacy criteri
 ![Image](https://raw.github.com/arx-deidentifier/anonbench/master/doc/mean_check_datasets.png)
 ![Image](https://raw.github.com/arx-deidentifier/anonbench/master/doc/mean_rollup_datasets.png)
 ![Image](https://raw.github.com/arx-deidentifier/anonbench/master/doc/mean_time_datasets.png)
-
-
 
 Downloads
 ------
