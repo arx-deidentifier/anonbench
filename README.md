@@ -19,17 +19,36 @@ frameworks. Moreover, the repository contains implementations of the following a
 
 5. [Flash](http://dx.doi.org/10.1109/SocialCom-PASSAT.2012.52): the implementation can be found [here](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmFlash.java).
 
+Privacy criteria
+------
+All 11 reasonable combinations of the following privacy criteria are included in our benchmark:
+
+1. 5-anonymity
+
+2. recursive-(4,3)-diversity
+
+3. hierarchical-distance-0.2-closeness
+
+4. (0.05, 0.15)-presence
+
+
+Datasets
+------
+
+For licensing reasons no data is contained in this repository. Please contact arx.deidentifier@gmail.com for information on how to obtain the benchmark datasets.
 
 Results
 ------
 
 On a Desktop PC with a quad-core 3.1 GHz Intel Core i5 CPU running a 64-bit Linux 3.0.14 kernel and a
-64-bit Sun JVM (1.7.0 21) executed with *java -Xmx4G -XX:+UseConcMarkSweepGC -jar anonbench-0.1.jar* it produces the following workload averages:
+64-bit Sun JVM (1.7.0 21) executed with *java -Xmx4G -XX:+UseConcMarkSweepGC -jar anonbench-0.1.jar* the following results are produced:
 
+Geometric mean of key parameters over all five benchmark datasets:
 ![Image](https://raw.github.com/arx-deidentifier/anonbench/master/doc/mean_check_criteria.png)
 ![Image](https://raw.github.com/arx-deidentifier/anonbench/master/doc/mean_rollup_criteria.png)
 ![Image](https://raw.github.com/arx-deidentifier/anonbench/master/doc/mean_time_criteria.png)
 
+Geometric mean of key parameters over all eleven combinations of privacy criteria:
 ![Image](https://raw.github.com/arx-deidentifier/anonbench/master/doc/mean_check_datasets.png)
 ![Image](https://raw.github.com/arx-deidentifier/anonbench/master/doc/mean_rollup_datasets.png)
 ![Image](https://raw.github.com/arx-deidentifier/anonbench/master/doc/mean_time_datasets.png)
