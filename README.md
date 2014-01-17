@@ -23,13 +23,13 @@ Privacy criteria
 ------
 All 11 reasonable combinations of the following privacy criteria are included in our benchmark:
 
-1. (5-anonymity)[http://dx.doi.org/10.1142/S0218488502001648]
+1. [5-anonymity](http://dx.doi.org/10.1142/S0218488502001648)
 
-2. (recursive-(4,3)-diversity)[http://dx.doi.org/10.1145/1217299.1217302]
+2. [recursive-(4,3)-diversity](http://dx.doi.org/10.1145/1217299.1217302)
 
-3. (hierarchical-distance-0.2-closeness)[http://dx.doi.org/10.1109/ICDE.2007.367856]
+3. [hierarchical-distance-0.2-closeness](http://dx.doi.org/10.1109/ICDE.2007.367856)
 
-4. ((0.05, 0.15)-presence)[http://dx.doi.org/10.1145/1247480.1247554]
+4. [(0.05, 0.15)-presence](http://dx.doi.org/10.1145/1247480.1247554)
 
 
 Datasets
