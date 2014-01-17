@@ -25,7 +25,7 @@ Results
 ------
 
 On a Desktop PC with a quad-core 3.1 GHz Intel Core i5 CPU running a 64-bit Linux 3.0.14 kernel and a
-64-bit Sun JVM (1.7.0 21) executed with *java -Xmx4G -XX:+UseConcMarkSweepGC -jar anonbench-0.1.jar* it produces the following result:
+64-bit Sun JVM (1.7.0 21) executed with *java -Xmx4G -XX:+UseConcMarkSweepGC -jar anonbench-0.1.jar* it produces the following workload averages:
 
 ![Image](https://raw.github.com/arx-deidentifier/anonbench/master/doc/mean_check_criteria.png)
 ![Image](https://raw.github.com/arx-deidentifier/anonbench/master/doc/mean_rollup_criteria.png)
