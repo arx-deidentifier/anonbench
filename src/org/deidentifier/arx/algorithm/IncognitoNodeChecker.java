@@ -28,7 +28,8 @@ import org.deidentifier.arx.metric.Metric;
  * This class implements a node checker that can operate on the subset of
  * the quasi-identifiers
  * 
- * @author Prasser, Kohlmayer
+ * @author Fabian Prasser
+ * @author Florian Kohlmayer
  */
 public class IncognitoNodeChecker extends org.deidentifier.arx.framework.check.NodeChecker {
 

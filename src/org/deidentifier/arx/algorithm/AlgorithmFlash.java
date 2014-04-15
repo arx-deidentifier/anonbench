@@ -36,7 +36,8 @@ import org.deidentifier.arx.framework.lattice.Node;
 /**
  * This class provides a reference implementation of the Binary FLASH Algorithm.
  * 
- * @author Prasser, Kohlmayer
+ * @author Fabian Prasser
+ * @author Florian Kohlmayer
  */
 public class AlgorithmFlash extends AbstractBenchmarkAlgorithm {
 

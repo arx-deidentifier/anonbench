@@ -25,7 +25,8 @@ import org.deidentifier.arx.framework.lattice.Node;
 /**
  * This class implements a map from arrays representing transformations to the actual node object
  * 
- * @author Prasser, Kohlmayer
+ * @author Fabian Prasser
+ * @author Florian Kohlmayer
  */
 public class OLALatticeNodeMap {
 

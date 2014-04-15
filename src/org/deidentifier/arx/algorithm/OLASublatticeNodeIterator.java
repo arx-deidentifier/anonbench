@@ -28,7 +28,8 @@ import org.deidentifier.arx.framework.lattice.Node;
 /**
  * This class implements an iterator, that enumerates nodes on mid-level of a given lattice
  * 
- * @author Prasser, Kohlmayer
+ * @author Fabian Prasser
+ * @author Florian Kohlmayer
  */
 public class OLASublatticeNodeIterator implements Iterator<Node> {
 

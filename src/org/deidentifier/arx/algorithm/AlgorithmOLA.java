@@ -38,7 +38,8 @@ import org.deidentifier.arx.framework.lattice.Node;
  * Florian Kohlmayer*, Fabian Prasser*, et. al "Highly Efficient Optimal K-Anonymity For Biomedical Datasets"
  * Proceedings of the 25th IEEE International Symposium on Computer-Based Medical Systems (CBMS), June 2012.
  * 
- * @author Prasser, Kohlmayer
+ * @author Fabian Prasser
+ * @author Florian Kohlmayer
  */
 public class AlgorithmOLA extends AbstractBenchmarkAlgorithm {
 
