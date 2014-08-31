@@ -46,7 +46,7 @@ number of rollups gives an indication of an algorithm's optimizability and, fina
 execution times gives an indication of an algorithm's overall performance.
 
 On a Desktop PC with a quad-core 3.1 GHz Intel Core i5 CPU running a 64-bit Linux 3.0.14 kernel and a
-64-bit Sun JVM (1.7.0 21) executed with *java -Xmx4G -XX:+UseConcMarkSweepGC -jar anonbench-0.1.jar* the following results are produced:
+64-bit Sun JVM (1.7.0 21) executed with *java -Xmx4G -XX:+UseConcMarkSweepGC -jar anonbench-0.2.jar* the following results are produced:
 
 Geometric mean of key parameters over all five benchmark datasets:
 ![Image](https://raw.github.com/arx-deidentifier/anonbench/master/doc/legend.png)
@@ -61,8 +61,8 @@ Geometric mean of key parameters over all eleven combinations of privacy criteri
 
 Downloads
 ------
-[Library (Version 0.1)](https://raw.github.com/arx-deidentifier/anonbench/master/jars/anonbench-0.1.jar)
+[Library (Version 0.2)](https://raw.github.com/arx-deidentifier/anonbench/master/jars/anonbench-0.2.jar)
 
-[Documentation (Version 0.1)](https://raw.github.com/arx-deidentifier/anonbench/master/jars/anonbench-0.1-doc.jar)
+[Documentation (Version 0.2)](https://raw.github.com/arx-deidentifier/anonbench/master/jars/anonbench-0.2-doc.jar)
 
-[Source (Version 0.1)](https://raw.github.com/arx-deidentifier/anonbench/master/jars/anonbench-0.1-src.jar)
+[Source (Version 0.2)](https://raw.github.com/arx-deidentifier/anonbench/master/jars/anonbench-0.2-src.jar)

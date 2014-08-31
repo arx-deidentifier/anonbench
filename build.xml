@@ -26,10 +26,10 @@
     </target>
 
     <target name="javadoc" depends="clean-javadoc">
-        <javadoc destdir="tmpdoc" source="1.7" notree="false" nonavbar="false" noindex="false" splitindex="true" access="public" use="true" author="Fabian Praßer" version="0.1" windowtitle="AnonBench" private="false" failonerror="true">
+        <javadoc destdir="tmpdoc" source="1.7" notree="false" nonavbar="false" noindex="false" splitindex="true" access="public" use="true" author="Fabian Praßer" version="0.2" windowtitle="AnonBench" private="false" failonerror="true">
             <classpath>
-				<path path="lib/subframe-0.1-lib.jar"/>
-				<path path="lib/libarx-2.0-alpha.jar"/>
+				<path path="lib/subframe-0.2-lib.jar"/>
+				<path path="lib/libarx-2.3.0-alpha1.jar"/>
                 <path path="src/"/>
             </classpath>
             <packageset dir="src/" defaultexcludes="yes">
@@ -40,28 +40,28 @@
     <target name="compile" depends="prepare" description="compile the source ">
         <javac srcdir="src/" destdir="build/">
             <classpath>
-            	<path path="lib/subframe-0.1-lib.jar"/>
-            	<path path="lib/libarx-2.0-alpha.jar"/>
+            	<path path="lib/subframe-0.2-lib.jar"/>
+            	<path path="lib/libarx-2.3.0-alpha1.jar"/>
                 <path path="src/" />
             </classpath>
         </javac>
     </target>
 
     <target name="jars" depends="compile, javadoc">
-        <jar destfile="jars/anonbench-0.1.jar">
-            <zipfileset src="lib/subframe-0.1-lib.jar" excludes="META-INF/*.SF" />
-            <zipfileset src="lib/libarx-2.0-alpha.jar" excludes="META-INF/*.SF" />
+        <jar destfile="jars/anonbench-0.2.jar">
+            <zipfileset src="lib/subframe-0.2-lib.jar" excludes="META-INF/*.SF" />
+            <zipfileset src="lib/libarx-2.3.0-alpha1.jar" excludes="META-INF/*.SF" />
             <fileset dir="build" defaultexcludes="no">
             </fileset>
             <manifest>
                 <attribute name="Main-Class" value="org.deidentifier.arx.BenchmarkMain" />
             </manifest>
         </jar>
-        <jar destfile="jars/anonbench-0.1-doc.jar">
+        <jar destfile="jars/anonbench-0.2-doc.jar">
             <fileset dir="tmpdoc" defaultexcludes="no">
             </fileset>
         </jar>
-        <jar destfile="jars/anonbench-0.1-src.jar">
+        <jar destfile="jars/anonbench-0.2-src.jar">
             <fileset dir="src/" defaultexcludes="no">
             </fileset>
         </jar>
