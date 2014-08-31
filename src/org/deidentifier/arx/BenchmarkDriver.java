@@ -114,7 +114,7 @@ public class BenchmarkDriver {
         implementation.traverse();
         
         // Collect
-        Node optimum = implementation.getMetric().getGlobalOptimum();
+        Node optimum = implementation.getGlobalOptimum();
         String loss = String.valueOf(optimum.getInformationLoss().getValue());
         int[] transformation = optimum.getTransformation();
         
@@ -166,7 +166,8 @@ public class BenchmarkDriver {
         }
 
         // Initialize the metric
-        config.getMetric().initialize(manager.getDataQI(),
+        config.getMetric().initialize(handle.getDefinition(),
+                                      manager.getDataQI(),
                                       manager.getHierarchies(),
                                       config);
 

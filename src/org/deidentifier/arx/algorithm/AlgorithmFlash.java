@@ -24,11 +24,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.PriorityQueue;
-import java.util.Stack;
 
 import org.deidentifier.arx.framework.check.INodeChecker;
-import org.deidentifier.arx.framework.check.history.History;
-import org.deidentifier.arx.framework.check.history.History.PruningStrategy;
 import org.deidentifier.arx.framework.data.GeneralizationHierarchy;
 import org.deidentifier.arx.framework.lattice.Lattice;
 import org.deidentifier.arx.framework.lattice.Node;
@@ -39,9 +36,6 @@ import org.deidentifier.arx.framework.lattice.Node;
  * @author Prasser, Kohlmayer
  */
 public class AlgorithmFlash extends AbstractBenchmarkAlgorithm {
-
-    /** The stack. */
-    private final Stack<Node>         stack;
 
     /** The heap. */
     private final PriorityQueue<Node> pqueue;
@@ -54,9 +48,6 @@ public class AlgorithmFlash extends AbstractBenchmarkAlgorithm {
 
     /** The strategy. */
     private final FLASHStrategy       strategy;
-
-    /** The history */
-    private History                   history;
 
     /**
      * Creates a new instance of the FLASH algorithm.
@@ -78,9 +69,6 @@ public class AlgorithmFlash extends AbstractBenchmarkAlgorithm {
         this.pqueue = new PriorityQueue<Node>(11, strategy);
         this.sorted = new boolean[lattice.getSize()];
         this.path = new ArrayList<Node>();
-        this.stack = new Stack<Node>();
-        this.history = checker.getHistory();
-        this.history.setPruningStrategy(PruningStrategy.ANONYMOUS);
     }
 
     /*
@@ -93,7 +81,6 @@ public class AlgorithmFlash extends AbstractBenchmarkAlgorithm {
 
         // Init
         pqueue.clear();
-        stack.clear();
 
         // For each node
         final int length = lattice.getLevels().length;
@@ -101,12 +88,12 @@ public class AlgorithmFlash extends AbstractBenchmarkAlgorithm {
             Node[] level;
             level = this.sort(i);
             for (final Node node : level) {
-                if (!node.isTagged()) {
+                if (!isTagged(node)) {
                     pqueue.add(node);
                     while (!pqueue.isEmpty()) {
                         Node head = pqueue.poll();
                         // if anonymity is unknown
-                        if (!head.isTagged()) {
+                        if (!isTagged(head)) {
                             findPath(head);
                             head = checkPathBinary(path);
                         }
@@ -132,19 +119,19 @@ public class AlgorithmFlash extends AbstractBenchmarkAlgorithm {
             final int mid = (low + high) >>> 1;
             final Node node = path.get(mid);
 
-            if (!node.isTagged()) {
+            if (!isTagged(node)) {
                 check(node);
-                lattice.tagAnonymous(node, node.isAnonymous());
-                if (!node.isAnonymous()) {
+                tag(node);
+                if (!isAnonymous(node)) {
                     for (final Node up : node.getSuccessors()) {
-                        if (!up.isTagged()) {
+                        if (!isTagged(up)) {
                             pqueue.add(up);
                         }
                     }
                 }
             }
 
-            if (node.isAnonymous()) {
+            if (isAnonymous(node)) {
                 lastAnonymousNode = node;
                 high = mid - 1;
             } else {
@@ -169,7 +156,7 @@ public class AlgorithmFlash extends AbstractBenchmarkAlgorithm {
             found = false;
             this.sort(current);
             for (final Node candidate : current.getSuccessors()) {
-                if (!candidate.isTagged()) {
+                if (!isTagged(candidate)) {
                     current = candidate;
                     path.add(candidate);
                     found = true;
@@ -187,19 +174,21 @@ public class AlgorithmFlash extends AbstractBenchmarkAlgorithm {
      *            The level
      * @return the node[]
      */
-
     private final Node[] sort(final int level) {
-        final Node[] result = new Node[lattice.getUntaggedCount(level)];
-        if (result.length == 0) { return result; }
-        int index = 0;
-        final Node[] nlevel = lattice.getLevels()[level];
-        for (final Node n : nlevel) {
-            if (!n.isTagged()) {
-                result[index++] = n;
+        
+        // Create
+        List<Node> result = new ArrayList<Node>();
+        Node[] nlevel = lattice.getLevels()[level];
+        for (Node n : nlevel) {
+            if (!isTagged(n)) {
+                result.add(n);
             }
         }
-        Arrays.sort(result, strategy);
-        return result;
+
+        // Sort
+        Node[] resultArray = result.toArray(new Node[result.size()]);
+        Arrays.sort(resultArray, strategy);
+        return resultArray;
     }
 
     /**

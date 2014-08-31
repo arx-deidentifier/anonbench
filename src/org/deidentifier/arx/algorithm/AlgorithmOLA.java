@@ -23,7 +23,6 @@ package org.deidentifier.arx.algorithm;
 import java.util.Iterator;
 
 import org.deidentifier.arx.framework.check.INodeChecker;
-import org.deidentifier.arx.framework.check.history.History.PruningStrategy;
 import org.deidentifier.arx.framework.lattice.Lattice;
 import org.deidentifier.arx.framework.lattice.Node;
 
@@ -66,7 +65,6 @@ public class AlgorithmOLA extends AbstractBenchmarkAlgorithm {
     public AlgorithmOLA(final Lattice lattice, final INodeChecker checker) {
         
         super(lattice, checker);
-        checker.getHistory().setPruningStrategy(PruningStrategy.ANONYMOUS);
 
         // Init the map
         map = new OLALatticeNodeMap(lattice.getMaximumGeneralizationLevels());
@@ -94,12 +92,7 @@ public class AlgorithmOLA extends AbstractBenchmarkAlgorithm {
      */
     public void checkAndTag(final Node node) {
         check(node);
-        if (node.getInformationLoss() != null) {
-            if (!node.isTagged()) doTag(node, true);
-            node.setInformationLoss(node.getInformationLoss());
-        } else {
-            if (!node.isTagged()) doTag(node, false);
-        }
+        doTag(node, isAnonymous(node));
     }
 
     /**
@@ -121,13 +114,8 @@ public class AlgorithmOLA extends AbstractBenchmarkAlgorithm {
     @Override
     public void traverse() {
 
-        // checkAndTagCenter();
         final int maxindex = lattice.getLevels().length - 1;
         kmin(lattice.getLevels()[0][0], lattice.getLevels()[maxindex][0]);
-
-        // Highest Node in lattice is always anononymous in our case
-        lattice.getLevels()[maxindex][0].setTagged();
-        lattice.getLevels()[maxindex][0].setAnonymous(true);
     }
 
     /**
@@ -139,8 +127,11 @@ public class AlgorithmOLA extends AbstractBenchmarkAlgorithm {
     private void doTag(final Node node, final boolean anonymous) {
 
         // Tag
-        node.setTagged();
-        node.setAnonymous(anonymous);
+        if (anonymous) {
+            lattice.setProperty(node, Node.PROPERTY_ANONYMOUS | Node.PROPERTY_SUCCESSORS_PRUNED);
+        } else {
+            lattice.setProperty(node, Node.PROPERTY_NOT_ANONYMOUS);
+        }
 
         untagged[node.getLevel()]--;
         if (untagged[node.getLevel()] == 0) {
@@ -150,13 +141,13 @@ public class AlgorithmOLA extends AbstractBenchmarkAlgorithm {
         // Traverse
         if (anonymous) {
             for (final Node up : node.getSuccessors()) {
-                if (!up.isTagged()) {
+                if (!isTagged(up)) {
                     doTag(up, anonymous);
                 }
             }
         } else {
             for (final Node down : node.getPredecessors()) {
-                if (!down.isTagged()) {
+                if (!isTagged(down)) {
                     doTag(down, anonymous);
                 }
             }
@@ -186,7 +177,7 @@ public class AlgorithmOLA extends AbstractBenchmarkAlgorithm {
                 processMidNode(bottom, top, mid);
             }
         } else { // topLevel - bottomLevel <= 1
-            if (!(bottom.isTagged() && !bottom.isAnonymous())) {
+            if (!(isTagged(bottom) && !isAnonymous(bottom))) {
                 checkAndTag(bottom);
             }
         }
@@ -206,14 +197,14 @@ public class AlgorithmOLA extends AbstractBenchmarkAlgorithm {
                                 final Node top,
                                 final Node mid) {
 
-        if (!mid.isTagged()) {
+        if (!isTagged(mid)) {
             checkAndTag(mid);
         }
 
         Node newTop = null;
         Node newBottom = null;
 
-        if (mid.isAnonymous()) {
+        if (isAnonymous(mid)) {
             newTop = mid;
             newBottom = bottom;
         } else {
@@ -225,9 +216,9 @@ public class AlgorithmOLA extends AbstractBenchmarkAlgorithm {
             if (levelsNotPruned(newTop.getLevel(), newBottom.getLevel())) {
                 kmin(newBottom, newTop);
             } else {
-                if (!newBottom.isTagged()) {
+                if (!isTagged(newBottom)) {
                     checkAndTag(newBottom);
-                } else if (!newTop.isTagged()) {
+                } else if (!isTagged(newTop)) {
                     checkAndTag(newTop);
                 }
             }

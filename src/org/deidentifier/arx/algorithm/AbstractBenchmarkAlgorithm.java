@@ -23,7 +23,6 @@ package org.deidentifier.arx.algorithm;
 import org.deidentifier.arx.framework.check.INodeChecker;
 import org.deidentifier.arx.framework.lattice.Lattice;
 import org.deidentifier.arx.framework.lattice.Node;
-import org.deidentifier.arx.metric.Metric;
 
 /**
  * Abstract base class for algorithms used in the benchmark
@@ -48,14 +47,6 @@ public abstract class AbstractBenchmarkAlgorithm extends AbstractAlgorithm {
     }
 
     /**
-     * Returns the metric used for measuring information loss
-     * @return 
-     */
-    public Metric<?> getMetric(){
-        return checker.getMetric();
-    }
-    
-    /**
      * Returns the number of checks
      * @return
      */
@@ -78,7 +69,7 @@ public abstract class AbstractBenchmarkAlgorithm extends AbstractAlgorithm {
     protected void check(Node node) {
 
         // Check
-        checker.check(node);
+        lattice.setChecked(node, checker.check(node));
         checks++;
 
         // Store
@@ -101,5 +92,111 @@ public abstract class AbstractBenchmarkAlgorithm extends AbstractAlgorithm {
         if (successor) {
             rollups++;
         }
+    }
+    /**
+     * Returns whether the transformation represented by the node was
+     * determined to be anonymous. Returns <code>null</code> if such information
+     * is not available
+     * @param node
+     * @return
+     */
+    protected Boolean isAnonymous(Node node) {
+        if (node.hasProperty(Node.PROPERTY_ANONYMOUS)) {
+            return true;
+        } else if (node.hasProperty(Node.PROPERTY_NOT_ANONYMOUS)) {
+            return false;
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * Returns whether the node has been tagged already
+     * @param node
+     * @return
+     */
+    protected boolean isTagged(Node node) {
+        return node.hasProperty(Node.PROPERTY_ANONYMOUS) ||
+               node.hasProperty(Node.PROPERTY_NOT_ANONYMOUS);
+    }
+    
+    /**
+     * Predictively tags the search space with the node's anonymity property
+     * @param node
+     * @param lattice
+     */
+    protected void tag(Lattice lattice, Node node){
+        if (node.hasProperty(Node.PROPERTY_ANONYMOUS)) {
+            tagAnonymous(lattice, node);
+        }
+        else if (node.hasProperty(Node.PROPERTY_NOT_ANONYMOUS)) {
+            tagNotAnonymous(lattice, node);
+        }
+    }
+    
+    /**
+     * Predictively tags the search space with the node's anonymity property
+     * @param node
+     */
+    protected void tag(Node node){
+        tag(lattice, node);
+    }
+    
+    /**
+     * Tags a transformation
+     * @param node
+     * @param anonymous
+     */
+    protected void setAnonymous(Node node, boolean anonymous) {
+        setAnonymous(lattice, node, anonymous);
+    }
+
+    /**
+     * Tags a transformation
+     * @param node
+     * @param lattice
+     * @param anonymous
+     */
+    protected void setAnonymous(Lattice lattice, Node node, boolean anonymous) {
+        if (anonymous) {
+            lattice.setProperty(node, Node.PROPERTY_ANONYMOUS);
+        } else {
+            lattice.setProperty(node, Node.PROPERTY_NOT_ANONYMOUS);
+        }
+    }
+
+    /**
+     * Predictively tags the search space from an anonymous transformation
+     * @param node
+     * @param lattice
+     */
+    protected void tagAnonymous(Lattice lattice, Node node) {
+        lattice.setPropertyUpwards(node, true, Node.PROPERTY_ANONYMOUS |
+                                               Node.PROPERTY_SUCCESSORS_PRUNED);
+    }
+    
+    /**
+     * Predictively tags the search space from an anonymous transformation
+     * @param node
+     */
+    protected void tagAnonymous(Node node) {
+        tagAnonymous(lattice, node);
+    }
+    
+    /**
+     * Predictively tags the search space from a non-anonymous transformation
+     * @param node
+     * @param lattice
+     */
+    protected void tagNotAnonymous(Lattice lattice, Node node) {
+        lattice.setPropertyDownwards(node, false, Node.PROPERTY_NOT_ANONYMOUS);
+    }
+    
+    /**
+     * Predictively tags the search space from a non-anonymous transformation
+     * @param node
+     */
+    protected void tagNotAnonymous(Node node) {
+        tagNotAnonymous(lattice, node);
     }
 }

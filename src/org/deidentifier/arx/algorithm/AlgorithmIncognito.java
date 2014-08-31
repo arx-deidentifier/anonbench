@@ -28,8 +28,8 @@ import java.util.TreeSet;
 
 import org.deidentifier.arx.ARXConfiguration;
 import org.deidentifier.arx.framework.check.INodeChecker;
+import org.deidentifier.arx.framework.check.INodeChecker.Result;
 import org.deidentifier.arx.framework.check.NodeChecker;
-import org.deidentifier.arx.framework.check.history.History.PruningStrategy;
 import org.deidentifier.arx.framework.data.DataManager;
 import org.deidentifier.arx.framework.lattice.Lattice;
 import org.deidentifier.arx.framework.lattice.LatticeBuilder;
@@ -54,8 +54,6 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
      */
     private AlgorithmIncognito(final Lattice lattice, final INodeChecker checker) {
         super(lattice, checker);
-        checker.getHistory().setPruningStrategy(PruningStrategy.ANONYMOUS);
-
     }
 
     /**
@@ -79,15 +77,15 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
      * @param checker
      * @param node
      */
-    private void check(NodeChecker checker, Node node) {
+    private Result check(NodeChecker checker, Node node) {
 
-        checker.check(node);
+        Result result = checker.check(node);
         checks++;
 
         // Store
         if (previous == null) {
             previous = node;
-            return;
+            return result;
         }
 
         // Check if successor
@@ -104,6 +102,9 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
         if (successor) {
             rollups++;
         }
+        
+        // Return
+        return result;
     }
 
     /**
@@ -236,7 +237,8 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
 
                             // Tag node accordingly
                             final Node pruneNode = currentLattice.getMap().get(repesentativeStateInLocalLattice);
-                            currentLattice.getLattice().tagAnonymous(pruneNode, false);
+                            setAnonymous(currentLattice.getLattice(), pruneNode, false);
+                            tag(currentLattice.getLattice(), pruneNode);
                         }
                     }
                 }
@@ -249,7 +251,7 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
                 // Perform breath first search over current sub-lattice, backed up by overall lattice
                 for (final Node[] levels : currentLevels) {
                     for (final Node localnode : levels) {
-                        if (!localnode.isTagged()) {
+                        if (!isTagged(localnode)) {
 
                             // Expand local representation to global representation
                             for (int j = 0; j < subset.length; j++) {
@@ -257,19 +259,16 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
                             }
                             final Node repNode = lattice.getMap().get(currentRepresentative);
 
-                            // Check
-                            check(checker, repNode);
-
-                            // And tag
-                            if (repNode.getInformationLoss() != null) {
-                                currentLattice.getLattice().tagAnonymous(localnode, true);
-                                localnode.setInformationLoss(repNode.getInformationLoss());
-                            } else {
-                                currentLattice.getLattice().tagAnonymous(localnode, false);
+                            // Check and tag
+                            Lattice cLattice = currentLattice.getLattice();
+                            cLattice.setChecked(repNode, check(checker, repNode));
+                            tag(cLattice, localnode);
+                            
+                            // Track
+                            if (!isAnonymous(repNode)) {
                                 currentNonAnonymousNodes.add(localnode);
                                 currentNonAnonyousTransformations.add(subset);
                             }
-                            localnode.setChecked();
                         }
                     }
                 }
