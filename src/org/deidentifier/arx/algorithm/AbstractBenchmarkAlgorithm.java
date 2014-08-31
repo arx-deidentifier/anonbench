@@ -70,6 +70,7 @@ public abstract class AbstractBenchmarkAlgorithm extends AbstractAlgorithm {
 
         // Check
         lattice.setChecked(node, checker.check(node));
+        trackOptimum(node);
         checks++;
 
         // Store

@@ -65,6 +65,10 @@ public abstract class TestAbstract extends TestCase {
 
         // For each algorithm
         for (BenchmarkAlgorithm algorithm : BenchmarkSetup.getAlgorithms()) {
+            
+            if (algorithm == BenchmarkAlgorithm.BFS) {
+                continue;
+            }
                 
             // Collect
             TestConfiguration result = driver.test(config.dataset, 

@@ -83,9 +83,9 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
     public void traverse() {
 
         // Prepare
-        IncognitoLattice lattice = new IncognitoLattice(super.lattice);
+        IncognitoLattice globalLattice = new IncognitoLattice(super.lattice);
         IncognitoNodeChecker checker = (IncognitoNodeChecker) super.checker;
-        int numQIs = lattice.getLattice().getMaximumGeneralizationLevels().length;
+        int numQIs = globalLattice.getLattice().getMaximumGeneralizationLevels().length;
         Set<Set<Integer>>[] combinations = getCombinations(numQIs);
         IncognitoContext context = new IncognitoContext();
         
@@ -103,9 +103,9 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
 
                 // Use a special lattice for any subset of the QIs and the main lattice for all QIs
                 if (i == numQIs - 1) {
-                    context.setLattice(lattice);
+                    context.setLattice(globalLattice);
                 } else {
-                    context.setLattice(new IncognitoLattice(getLattice(subset)));
+                    context.setLattice(getLattice(subset));
                 }
 
                 // Reset previous node for counting roll-ups correctly
@@ -125,7 +125,7 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
                 }
 
                 // Perform a breath first search over current sub-lattice
-                bfs(lattice, checker, context, subset);
+                bfs(globalLattice, checker, context, subset);
             }
         }
     }
@@ -158,6 +158,11 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
 
                     // Check
                     globalLattice.getLattice().setChecked(globalNode, check(checker, globalNode));
+                    
+                    // Track
+                    if (context.getLattice() == globalLattice) {
+                        trackOptimum(globalNode);
+                    }
 
                     // And tag
                     if (isAnonymous(globalNode)) {
@@ -256,7 +261,7 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
      * @param subset the subset
      * @return the lattice
      */
-    private Lattice getLattice(int[] subset) {
+    private IncognitoLattice getLattice(int[] subset) {
         int[] max = new int[subset.length];
         int[] min = new int[subset.length];
         int[] height = new int[subset.length];
@@ -264,7 +269,7 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
             height[i] = lattice.getMaximumGeneralizationLevels()[subset[i]];
             max[i] = lattice.getMaximumGeneralizationLevels()[subset[i]] - 1;
         }
-        return new LatticeBuilder(max, min, height).build();
+        return new IncognitoLattice(new LatticeBuilder(max, min, height).build());
     }
 
     /**
