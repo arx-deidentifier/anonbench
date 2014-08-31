@@ -241,22 +241,63 @@ public class BenchmarkAnalysis {
 
         // Create plot
         plots.add(new PlotHistogramClustered("",
-                                             new Labels(focus, "Geometric mean"),
+                                             new Labels(focus, "Geom. mean of " + variable.toLowerCase()),
                                              series));
 
         // Define params
         GnuPlotParams params = new GnuPlotParams();
-        params.xticsrotate = 0;
-        if (variable.equals("Number of checks") && focus.equals("Dataset")) params.keypos = KeyPos.OUTSIDE_TOP;
-        else params.keypos = KeyPos.NONE;
-        params.size = 0.9d;
-        if (variable.equals("Execution time")) params.minY = 0.001d;
-        else params.minY = 1d;
+        params.rotateXTicks = 0;
+        params.printValues = true;
+        params.size = 1.5;
+        if (variable.equals("Execution time")) {
+            params.minY = 0.001d;
+            params.maxY = getMax(series, 2);
+            params.printValuesFormatString= "%.2f";
+        } else if (variable.equals("Number of rollups")) {
+            params.minY = 1d;
+            if (focus.equals("Criteria")) {
+                params.maxY = getMax(series, 0);    
+            } else {
+                params.maxY = getMax(series, 1);
+            }
+            params.printValuesFormatString= "%.0f";
+        } else if (variable.equals("Number of checks")) {
+            params.minY = 1d;
+            params.maxY = getMax(series, 1);
+            params.printValuesFormatString= "%.0f";
+        }
+        if (focus.equals("Criteria")) {
+            params.keypos = KeyPos.AT(5, params.maxY * 1.1d, "horiz bot center");
+        } else {
+            params.keypos = KeyPos.AT(2, params.maxY * 1.1d, "horiz bot center");
+        }
         params.logY = true;
-        params.ratio = 0.3d;
+        params.ratio = 0.2d;
         
         // Return
         return new PlotGroup(variable + " grouped by \""+focus+"\"", plots, params, 1.0d);
+    }
+
+    /**
+     * Returns a maximum for the given series
+     * @param series
+     * @param offset Additional exponent
+     * @return
+     */
+    private static double getMax(Series3D series, int offset) {
+        
+        double max = -Double.MAX_VALUE;
+        for (Point3D point : series.getData()) {
+            max = Math.max(Double.valueOf(point.z), max);
+        }
+
+        // Find smallest exponent larger than max
+        for (int i = 0; i < 20; i++) {
+            double limit = Math.pow(10d, i);
+            if (limit >= max) { return Math.pow(10d, i + offset); }
+        }
+
+        throw new IllegalStateException("Cannot determine upper bound");
     }
 
     /**
