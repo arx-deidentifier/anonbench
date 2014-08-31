@@ -36,7 +36,8 @@ import org.deidentifier.arx.framework.lattice.Node;
  * Florian Kohlmayer*, Fabian Prasser* et al. Flash: Efficient, Stable and Optimal K-Anonymity.
  * Proceedings of the 4th IEEE International Conference on Information Privacy, Security, Risk and Trust (PASSAT), 2012.
  * 
- * @author Prasser, Kohlmayer
+ * @author Fabian Prasser
+ * @author Florian Kohlmayer
  */
 public class AlgorithmFlash extends AbstractBenchmarkAlgorithm {
 

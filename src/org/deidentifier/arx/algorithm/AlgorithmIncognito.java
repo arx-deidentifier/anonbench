@@ -42,7 +42,8 @@ import org.deidentifier.arx.metric.Metric;
  * K. LeFevre et al. "Incognito: efficient full-domain K-anonymity".
  * Proceedings of the 2005 ACM SIGMOD international Conference on Management of Data, 49-60. 
  * 
- * @author Prasser, Kohlmayer
+ * @author Fabian Prasser
+ * @author Florian Kohlmayer
  */
 public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
 

@@ -33,7 +33,8 @@ import org.deidentifier.arx.framework.data.GeneralizationHierarchy;
  * This class implements a transformer that can operate on the subset of
  * the quasi-identifiers
  * 
- * @author Prasser, Kohlmayer
+ * @author Fabian Prasser
+ * @author Florian Kohlmayer
  */
 public class IncognitoTransformer extends Transformer {
 

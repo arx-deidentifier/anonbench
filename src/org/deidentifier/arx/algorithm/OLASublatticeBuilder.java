@@ -28,7 +28,8 @@ import org.deidentifier.arx.framework.lattice.Node;
 /**
  * This class is used for building sub-lattices
  * 
- * @author Prasser, Kohlmayer
+ * @author Fabian Prasser
+ * @author Florian Kohlmayer
  */
 public class OLASublatticeBuilder {
 

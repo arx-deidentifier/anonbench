@@ -27,7 +27,8 @@ import org.deidentifier.arx.framework.lattice.Node;
 /**
  * This class implements a simple breadth-first-search with an outer loop.
  * 
- * @author Prasser, Kohlmayer
+ * @author Fabian Prasser
+ * @author Florian Kohlmayer
  */
 public class AlgorithmBFS extends AbstractBenchmarkAlgorithm {
 

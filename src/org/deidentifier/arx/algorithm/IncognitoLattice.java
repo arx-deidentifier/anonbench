@@ -26,7 +26,8 @@ import org.deidentifier.arx.framework.lattice.Node;
 /**
  * This class implements a lattice for Incognito
  * 
- * @author Prasser, Kohlmayer
+ * @author Fabian Prasser
+ * @author Florian Kohlmayer
  */
 public class IncognitoLattice {
 
