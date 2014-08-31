@@ -25,7 +25,7 @@ import org.deidentifier.arx.framework.lattice.Lattice;
 import org.deidentifier.arx.framework.lattice.Node;
 
 /**
- * This class provides a implementation of the BFS algorithm.
+ * This class implements a simple breadth-first-search with an outer loop.
  * 
  * @author Prasser, Kohlmayer
  */

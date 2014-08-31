@@ -31,7 +31,10 @@ import org.deidentifier.arx.framework.lattice.Lattice;
 import org.deidentifier.arx.framework.lattice.Node;
 
 /**
- * This class provides a reference implementation of the Binary FLASH Algorithm.
+ * This class implements the FLASH algorithm as proposed in:<br>
+ * <br>
+ * Florian Kohlmayer*, Fabian Prasser* et al. Flash: Efficient, Stable and Optimal K-Anonymity.
+ * Proceedings of the 4th IEEE International Conference on Information Privacy, Security, Risk and Trust (PASSAT), 2012.
  * 
  * @author Prasser, Kohlmayer
  */

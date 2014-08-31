@@ -32,38 +32,31 @@ import org.deidentifier.arx.metric.Metric;
  */
 public class IncognitoNodeChecker extends org.deidentifier.arx.framework.check.NodeChecker {
 
-    /** The original metric. */
-    private final Metric<?> originalMetric;
-    
     /**
      * Instantiates a new node checker incognito.
      * 
      * @param manager the manager
      * @param metric the metric
-     * @param secondMetric the second metric
-     * @param config the config
+     * @param config the configuration
      * @param historyMaxSize the history max size
      * @param historyThreshold the history threshold
      */
     public IncognitoNodeChecker(final DataManager manager,
                                 final Metric<?> metric,
-                                final Metric<?> secondMetric,
                                 final ARXConfiguration config,
                                 final int historyMaxSize,
                                 final double historyThreshold,
                                 final double snapshotSizeSnapshot) {
+        
+        // Init super-class
         super(manager,
               metric,
               config,
               historyMaxSize,
               historyThreshold,
               snapshotSizeSnapshot);
-        
-        // use second metric instance for checks until last check
-        originalMetric = metric;
-        this.metric = secondMetric; 
 
-        // Create a transformer
+        // Create a specialized transformer
         transformer = new IncognitoTransformer(manager.getDataQI().getArray(),
                                                manager.getHierarchies(),
                                                manager.getDataQI().getHeader().length,
@@ -75,22 +68,21 @@ public class IncognitoNodeChecker extends org.deidentifier.arx.framework.check.N
     }
 
     /**
-     * Change metric.
-     */
-    public void changeMetric() {
-        metric = originalMetric;
-    }
-
-    /**
      * Sets the active columns.
      * 
      * @param subset the new active columns
      */
     public void setActiveColumns(final int[] subset) {
-        // Reset history and state machine
+        // Reset
         history.reset();
         stateMachine.reset();
         ((IncognitoTransformer) transformer).updateBufferSize(subset);
     }
 
+    /**
+     * Changes the metric used for measuring information loss
+     */
+    public void setMetric(Metric<?> metric) {
+        this.metric = metric;
+    }
 }

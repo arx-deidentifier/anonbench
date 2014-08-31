@@ -34,7 +34,7 @@ public class IncognitoLattice {
     private final Lattice           lattice;
 
     /** The map. */
-    private final OLALatticeNodeMap map;
+    private final NodeMap map;
 
     /**
      * Instantiates a new lattice incognito.
@@ -43,7 +43,7 @@ public class IncognitoLattice {
      */
     public IncognitoLattice(final Lattice lattice) {
         this.lattice = lattice;
-        map = new OLALatticeNodeMap(lattice.getMaximumGeneralizationLevels());
+        map = new NodeMap(lattice.getMaximumGeneralizationLevels());
         for (int i = 0; i < lattice.getLevels().length; i++) {
             final Node[] nodes = lattice.getLevels()[i];
             for (int j = 0; j < nodes.length; j++) {
@@ -66,7 +66,7 @@ public class IncognitoLattice {
      * 
      * @return the map
      */
-    public OLALatticeNodeMap getMap() {
+    public NodeMap getMap() {
         return map;
     }
 

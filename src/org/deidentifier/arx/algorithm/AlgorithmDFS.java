@@ -25,7 +25,7 @@ import org.deidentifier.arx.framework.lattice.Lattice;
 import org.deidentifier.arx.framework.lattice.Node;
 
 /**
- * This class provides a implementation of a DFS algorithm.
+ * This class implements a simple depth-first-search with an outer loop.
  * 
  * @author Prasser, Kohlmayer
  */

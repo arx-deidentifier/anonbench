@@ -27,15 +27,15 @@ import org.deidentifier.arx.framework.lattice.Lattice;
 import org.deidentifier.arx.framework.lattice.Node;
 
 /**
- * This class provides an efficient implementation of the OLA algorithm.
- * 
- * K. El Emam et al. "A Globally Optimal k-Anonymity Method for the De-Identification of Health Data"
- * J Am Med Inform Assoc 2009;16:670-682
- * doi:10.1197/jamia.M3144
- * 
- * Our implementation was described in
- * Florian Kohlmayer*, Fabian Prasser*, et. al "Highly Efficient Optimal K-Anonymity For Biomedical Datasets"
- * Proceedings of the 25th IEEE International Symposium on Computer-Based Medical Systems (CBMS), June 2012.
+ * This class provides an efficient implementation of the OLA algorithm proposed in:<br>
+ * <br>
+ * K. El Emam et al. "A Globally Optimal k-Anonymity Method for the De-Identification of Health Data".
+ * Journal of the American Medical Informatics Association. 2009;16:670-682.<br>
+ * <br>
+ * Our implementation was described in:<br>
+ * <br>
+ * Florian Kohlmayer*, Fabian Prasser*, et. al "Highly Efficient Optimal K-Anonymity For Biomedical Datasets".
+ * Proceedings of the 25th IEEE International Symposium on Computer-Based Medical Systems (CBMS). 2012.
  * 
  * @author Prasser, Kohlmayer
  */
@@ -48,7 +48,7 @@ public class AlgorithmOLA extends AbstractBenchmarkAlgorithm {
     private long                 levelmask        = 0;
 
     /** The map. */
-    private OLALatticeNodeMap    map              = null;
+    private NodeMap    map              = null;
 
     /** The untagged count. */
     private int[]                untagged         = null;
@@ -67,7 +67,7 @@ public class AlgorithmOLA extends AbstractBenchmarkAlgorithm {
         super(lattice, checker);
 
         // Init the map
-        map = new OLALatticeNodeMap(lattice.getMaximumGeneralizationLevels());
+        map = new NodeMap(lattice.getMaximumGeneralizationLevels());
         final Node[][] levels = lattice.getLevels();
         for (int i = 0; i < levels.length; i++) {
             final Node[] nodes = levels[i];
@@ -171,7 +171,7 @@ public class AlgorithmOLA extends AbstractBenchmarkAlgorithm {
             final int midLevel = (top.getLevel() + bottom.getLevel()) / 2;
 
             Iterator<Node> iter = null;
-            iter = new OLASublatticeNodeIterator(map, bottom, top, midLevel);
+            iter = new OLASublatticeIterator(map, bottom, top, midLevel);
             while (iter.hasNext()) {
                 final Node mid = iter.next();
                 processMidNode(bottom, top, mid);
@@ -186,12 +186,9 @@ public class AlgorithmOLA extends AbstractBenchmarkAlgorithm {
     /**
      * Processes a mid node.
      * 
-     * @param bottom
-     *            the bottom
-     * @param top
-     *            the top
-     * @param mid
-     *            the mid
+     * @param bottom the bottom
+     * @param top the top
+     * @param mid the mid
      */
     private void processMidNode(final Node bottom,
                                 final Node top,

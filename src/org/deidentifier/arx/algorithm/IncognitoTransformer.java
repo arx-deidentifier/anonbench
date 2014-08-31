@@ -37,25 +37,25 @@ import org.deidentifier.arx.framework.data.GeneralizationHierarchy;
  */
 public class IncognitoTransformer extends Transformer {
 
-    /** The active columns. */
+    /** Indices of active columns */
     private int[]     activeColumns;
 
-    /** The current buffer size. */
-    private int       currentBufferSize;
+    /** The current buffer size */
+    private int       bufferSize;
 
-    /** The num qis. */
+    /** The number of QIs. */
     private final int numQis;
 
     /**
-     * Instantiates a new transformer incognito.
+     * Instantiates a new transformer for the Incognito algorithm
      * 
      * @param data the data
      * @param hierarchies the hierarchies
-     * @param numQis the num qis
-     * @param sensValues the sens values
-     * @param config the config
-     * @param dictVal the dict val
-     * @param dictFreq the dict freq
+     * @param numQis the number of QIs
+     * @param sensValues the buffer of sensitive values
+     * @param config the configuration
+     * @param dictVal dictionary
+     * @param dictFreq dictionary
      */
     public IncognitoTransformer(final int[][] data,
                                 final GeneralizationHierarchy[] hierarchies,
@@ -74,11 +74,13 @@ public class IncognitoTransformer extends Transformer {
      * @param activeColumns the active columns
      */
     public void updateBufferSize(final int[] activeColumns) {
+        
         this.activeColumns = activeColumns;
-        final int numColumns = activeColumns.length;
+        int numColumns = activeColumns.length;
 
-        if (numColumns != currentBufferSize) { // resize buffer
-            currentBufferSize = numColumns;
+        // resize the buffer
+        if (numColumns != bufferSize) { 
+            bufferSize = numColumns;
             buffer = new int[data.length][];
             for (int i = 0; i < data.length; i++) {
                 buffer[i] = new int[numColumns];
@@ -178,5 +180,4 @@ public class IncognitoTransformer extends Transformer {
             return instances[index];
         }
     }
-
 }

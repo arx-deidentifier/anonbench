@@ -63,8 +63,8 @@ public class OLAFastBitSet {
         
         currentChunkIndex = -1;
 
-        // calculate next power of 2
-        final int sizeinBits = ((size + OLAFastBitSet.NUM_CHUNKS) - 1) / OLAFastBitSet.NUM_CHUNKS;
+        // Calculate next power of 2
+        final int sizeinBits = ((size + NUM_CHUNKS) - 1) / NUM_CHUNKS;
         int chunkSizeTemp = 1;
         while (chunkSizeTemp < sizeinBits) {
             chunkSizeTemp <<= 1;
@@ -77,7 +77,7 @@ public class OLAFastBitSet {
         final int newNumChunks = ((size + chunkSizeInBits) - 1) / chunkSizeInBits;
         chunks = new byte[newNumChunks][];
         moduloMask = chunkSizeInBits - 1;
-        mask = OLAFastBitSet.BIT_INDEX_MASK & moduloMask;
+        mask = BIT_INDEX_MASK & moduloMask;
     }
 
     /**
@@ -90,7 +90,7 @@ public class OLAFastBitSet {
 
         currentChunkIndex = bit >> shiftValue;
         if (chunks[currentChunkIndex] == null) { return false; }
-        return ((chunks[currentChunkIndex][(bit & moduloMask) >> OLAFastBitSet.ADDRESS_BITS_PER_UNIT] & (1 << (bit & mask))) != 0);
+        return ((chunks[currentChunkIndex][(bit & moduloMask) >> ADDRESS_BITS_PER_UNIT] & (1 << (bit & mask))) != 0);
     }
 
     /**
@@ -102,6 +102,6 @@ public class OLAFastBitSet {
 
         currentChunkIndex = bit >> shiftValue;
         if (chunks[currentChunkIndex] == null) chunks[currentChunkIndex] = new byte[chunkSizeInBytes];
-        chunks[currentChunkIndex][(bit & moduloMask) >> OLAFastBitSet.ADDRESS_BITS_PER_UNIT] |= 1 << (bit & mask);
+        chunks[currentChunkIndex][(bit & moduloMask) >> ADDRESS_BITS_PER_UNIT] |= 1 << (bit & mask);
     }
 }

@@ -21,10 +21,10 @@
 package org.deidentifier.arx.algorithm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.deidentifier.arx.ARXConfiguration;
 import org.deidentifier.arx.framework.check.INodeChecker;
@@ -37,15 +37,18 @@ import org.deidentifier.arx.framework.lattice.Node;
 import org.deidentifier.arx.metric.Metric;
 
 /**
- * This class implements the Incognito algorithm.
- * 
- * K. LeFevre et al. "Incognito: efficient full-domain K-anonymity"
- * Proceedings of the 2005 ACM SIGMOD international conference on Management of data, 49-60 
+ * This class implements the Incognito algorithm proposed in:<br>
+ * <br>
+ * K. LeFevre et al. "Incognito: efficient full-domain K-anonymity".
+ * Proceedings of the 2005 ACM SIGMOD international Conference on Management of Data, 49-60. 
  * 
  * @author Prasser, Kohlmayer
  */
 public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
 
+    /** The metric to be used by this algorithm*/
+    private Metric<?> metric;
+    
     /**
      * Instantiates a new incognito algorithm.
      * @param lattice
@@ -57,8 +60,7 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
      * @param snapshotSizeSnapshot
      */
     public AlgorithmIncognito(Lattice lattice, DataManager manager, Metric<?> metric, ARXConfiguration config, int historySize, double snapshotSizeDataset, double snapshotSizeSnapshot) {
-
-        this(lattice, new IncognitoNodeChecker(manager, metric, Metric.createHeightMetric(), config, historySize, snapshotSizeDataset, snapshotSizeSnapshot));
+        this(lattice, metric, new IncognitoNodeChecker(manager, Metric.createHeightMetric(), config, historySize, snapshotSizeDataset, snapshotSizeSnapshot));
     }
 
     /**
@@ -67,35 +69,9 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
      * @param lattice the lattice
      * @param checker the checker
      */
-    private AlgorithmIncognito(final Lattice lattice, final INodeChecker checker) {
+    private AlgorithmIncognito(Lattice lattice, Metric<?> metric, INodeChecker checker) {
         super(lattice, checker);
-    }
-
-    /**
-     * Checks if the array is a superset of the given array of indices
-     * 
-     * @param subset the subset
-     * @param superset the potential superset
-     * @return true, if is super set
-     */
-    public boolean isSuperSet(final int[] subset, final int[] superset) {
-        boolean isSuperset = true;
-        int g = 0;
-        for (int j = 0; j < subset.length; j++) {
-            if (subset[j] == superset[g]) {
-                g++;
-                if (g == superset.length) {
-                    break;
-                }
-            } else if (subset[j] > superset[g]) {
-                isSuperset = false;
-                break;
-            }
-        }
-        if (isSuperset && (g < superset.length)) {
-            isSuperset = false;
-        }
-        return isSuperset;
+        this.metric = metric;
     }
 
     /*
@@ -104,136 +80,95 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
      * @see org.deidentifier.arx.algorithm.AbstractAlgorithm#traverse()
      */
     @Override
-    @SuppressWarnings("unchecked")
     public void traverse() {
 
         // Prepare
-        final IncognitoLattice lattice = new IncognitoLattice(super.lattice);
-        final IncognitoNodeChecker checker = (IncognitoNodeChecker) super.checker;
-        final int width = lattice.getLattice().getMaximumGeneralizationLevels().length;
-
-        // Compute powerset
-        final HashSet<Integer> set = new HashSet<Integer>();
-        for (int i = 0; i < width; i++) {
-            set.add(i);
-        }
-        final Set<Set<Integer>> powerSet = getPowerSet(set);
-
-        // Compute all required combinations of quasi-identifiers
-        final Set<Set<Integer>>[] combinations = new HashSet[width];
-        for (final Set<Integer> set2 : powerSet) {
-            final int size = set2.size();
-            if (size > 0) {
-                Set<Set<Integer>> list = combinations[size - 1];
-                if (list == null) {
-                    list = new HashSet<Set<Integer>>();
-                }
-                list.add(set2);
-                combinations[size - 1] = list;
-            }
-        }
-
-        // Current metadata
-        ArrayList<Node> currentNonAnonymousNodes = new ArrayList<Node>();
-        ArrayList<int[]> currentNonAnonyousTransformations = new ArrayList<int[]>();
-        IncognitoLattice currentLattice = null;
-
+        IncognitoLattice lattice = new IncognitoLattice(super.lattice);
+        IncognitoNodeChecker checker = (IncognitoNodeChecker) super.checker;
+        int numQIs = lattice.getLattice().getMaximumGeneralizationLevels().length;
+        Set<Set<Integer>>[] combinations = getCombinations(numQIs);
+        IncognitoContext context = new IncognitoContext();
+        
         // For subset of QIs of any possible size
-        for (int i = 0; i < width; i++) {
+        for (int i = 0; i < numQIs; i++) {
 
             // Obtain all combinations for this size
-            final Set<Set<Integer>> combination = combinations[i];
+            Set<Set<Integer>> combination = combinations[i];
 
             // For each combination
-            for (final Set<Integer> set2 : combination) {
+            for (Set<Integer> _combination : combination) {
 
                 // Create ordered subset
-                final TreeSet<Integer> orderedSubsetSet = new TreeSet<Integer>();
-                orderedSubsetSet.addAll(set2);
-                final int[] subset = new int[set2.size()];
-                int pos = 0;
-                for (final int k : set2) {
-                    subset[pos] = k;
-                    pos++;
-                }
+                int[] subset = getOrderedArray(_combination);
 
-                // Build lattice for subset, use main lattice if subset consists of all QIs
-                if (i == (lattice.getLattice().getMaximumGeneralizationLevels().length - 1)) {
-                    currentLattice = lattice;
+                // Use a special lattice for any subset of the QIs and the main lattice for all QIs
+                if (i == numQIs - 1) {
+                    context.setLattice(lattice);
                 } else {
-                    currentLattice = new IncognitoLattice(getLattice(subset));
+                    context.setLattice(new IncognitoLattice(getLattice(subset)));
                 }
 
-                // Reset previous node for counting rollups correctly
+                // Reset previous node for counting roll-ups correctly
                 previous = null;
 
                 // Tell the node checker about the subset
                 checker.setActiveColumns(subset);
 
-                final Node[][] currentLevels = currentLattice.getLattice().getLevels();
-                final int[] currentRepresentative = new int[width];
-
-                // Prune nodes that can not be anonymous due to results from the previous runs
+                // Prune nodes that can not be anonymous due to results from previous runs
                 if (i > 0) {
-                    for (int k = 0; k < currentNonAnonymousNodes.size(); k++) {
-
-                        // Obtain data
-                        final int[] prevState = currentNonAnonymousNodes.get(k).getTransformation();
-                        final int[] prevSubSet = currentNonAnonyousTransformations.get(k);
-
-                        // check if current subset is superset of previous false Node
-                        final boolean isSuperset = isSuperSet(subset, prevSubSet);
-
-                        // If all nodes from previous subset are in current subset, pruning possible
-                        if (isSuperset) {
-
-                            // Clone
-                            final int[] repesentativeStateInLocalLattice = currentLattice.getLattice().getLevels()[currentLattice.getLattice().getLevels().length - 1][0].getTransformation().clone();
-
-                            // Change values of previous transformation in current lattice
-                            for (int j = 0; j < subset.length; j++) {
-                                for (int j2 = 0; j2 < prevSubSet.length; j2++) {
-                                    if (subset[j] == prevSubSet[j2]) {
-                                        repesentativeStateInLocalLattice[j] = prevState[j2];
-                                    }
-                                }
-                            }
-
-                            // Tag node accordingly
-                            final Node pruneNode = currentLattice.getMap().get(repesentativeStateInLocalLattice);
-                            setAnonymous(currentLattice.getLattice(), pruneNode, false);
-                            tag(currentLattice.getLattice(), pruneNode);
-                        }
-                    }
+                    prune(context, subset);
                 }
 
-                // During the last iteration use the original metric
-                if (i == (lattice.getLattice().getMaximumGeneralizationLevels().length - 1)) {
-                    checker.changeMetric();
+                // During the last iteration use the actually specified metric
+                if (i == numQIs - 1) {
+                    checker.setMetric(this.metric);
                 }
 
-                // Perform breath first search over current sub-lattice, backed up by overall lattice
-                for (final Node[] levels : currentLevels) {
-                    for (final Node localnode : levels) {
-                        if (!isTagged(localnode)) {
+                // Perform a breath first search over current sub-lattice
+                bfs(lattice, checker, context, subset);
+            }
+        }
+    }
 
-                            // Expand local representation to global representation
-                            for (int j = 0; j < subset.length; j++) {
-                                currentRepresentative[subset[j]] = localnode.getTransformation()[j];
-                            }
-                            final Node repNode = lattice.getMap().get(currentRepresentative);
+    /**
+     * Performs a breath first search over current sub-lattice
+     * 
+     * @param globalLattice
+     * @param checker
+     * @param context
+     * @param subset
+     * @param representative
+     */
+    private void bfs(IncognitoLattice globalLattice,
+                     IncognitoNodeChecker checker,
+                     IncognitoContext context,
+                     int[] subset) {
 
-                            // Check and tag
-                            Lattice cLattice = currentLattice.getLattice();
-                            cLattice.setChecked(repNode, check(checker, repNode));
-                            tag(cLattice, localnode);
-                            
-                            // Track
-                            if (!isAnonymous(repNode)) {
-                                currentNonAnonymousNodes.add(localnode);
-                                currentNonAnonyousTransformations.add(subset);
-                            }
-                        }
+        // For each level
+        for (Node[] localLevels : context.getLevels()) {
+            
+            // For each transformation
+            for (Node localNode : localLevels) {
+                
+                // If it is not tagged already
+                if (!isTagged(localNode)) {
+
+                    // Expand local representation to global representation
+                    Node globalNode = getGlobalNode(globalLattice, subset, localNode);
+
+                    // Check
+                    globalLattice.getLattice().setChecked(globalNode, check(checker, globalNode));
+
+                    // And tag
+                    if (isAnonymous(globalNode)) {
+                        setAnonymous(context.getLocalLattice(), localNode, true);
+                        tag(context.getLocalLattice(), localNode);
+                        context.getLocalLattice().setInformationLoss(localNode, globalNode.getInformationLoss());
+                    } else {    
+                        setAnonymous(context.getLocalLattice(), localNode, false);
+                        tag(context.getLocalLattice(), localNode);
+                        context.getNonAnonymousNodes().add(localNode);
+                        context.getNonAnonymousTransformations().add(subset);
                     }
                 }
             }
@@ -277,46 +212,182 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
     }
 
     /**
+     * Returns all possible combinations of numbers between 0 and maximum-1
+     * 
+     * @param maximum the maximum
+     * @return all possible combinations of numbers between 0 and maximum-1
+     */
+    private Set<Set<Integer>>[] getCombinations(int maximum) {
+        @SuppressWarnings("unchecked")
+        Set<Set<Integer>>[] combinations = new HashSet[maximum];
+        for (Set<Integer> set2 : getPowerSet(maximum)) {
+            int size = set2.size();
+            if (size > 0) {
+                Set<Set<Integer>> list = combinations[size - 1];
+                if (list == null) {
+                    list = new HashSet<Set<Integer>>();
+                }
+                list.add(set2);
+                combinations[size - 1] = list;
+            }
+        }
+        return combinations;
+    }
+
+    /**
+     * Returns a global representation of the given node in a local lattice for the
+     * given subset
+     * @param lattice
+     * @param subset
+     * @param node
+     * @return
+     */
+    private Node getGlobalNode(IncognitoLattice lattice, int[] subset, Node node) {
+        int[] representative = new int[lattice.getLattice().getMaximumGeneralizationLevels().length];
+        for (int j = 0; j < subset.length; j++) {
+            representative[subset[j]] = node.getTransformation()[j];
+        }
+        return lattice.getMap().get(representative);
+    }
+
+    /**
      * Builds the lattice for a given subset.
      * 
      * @param subset the subset
      * @return the lattice
      */
-    private Lattice getLattice(final int[] subset) {
-        final int[] max = new int[subset.length];
-        final int[] min = new int[subset.length];
-        final int[] height = new int[subset.length];
+    private Lattice getLattice(int[] subset) {
+        int[] max = new int[subset.length];
+        int[] min = new int[subset.length];
+        int[] height = new int[subset.length];
         for (int i = 0; i < max.length; i++) {
             height[i] = lattice.getMaximumGeneralizationLevels()[subset[i]];
             max[i] = lattice.getMaximumGeneralizationLevels()[subset[i]] - 1;
         }
-        final Lattice lattice = new LatticeBuilder(max, min, height).build();
-        return lattice;
+        return new LatticeBuilder(max, min, height).build();
     }
 
     /**
-     * Returns the powerset of the given set
+     * Returns an array containing the given elements in ascending order
+     * @param combination
+     * @return
+     */
+    private int[] getOrderedArray(Set<Integer> combination) {
+      int[] subset = new int[combination.size()];
+      int pos = 0;
+      for (int k : combination) {
+          subset[pos++] = k;
+      }
+      Arrays.sort(subset);
+      return subset;
+    }
+    
+    /**
+     * Returns the power set of all numbers between 0 and maximum-1
+     * 
+     * @param maximum the maximum
+     * @return the power set of all numbers between 0 and maximum-1
+     */
+    private Set<Set<Integer>> getPowerSet(int maximum) {
+        HashSet<Integer> set = new HashSet<Integer>();
+        for (int i = 0; i < maximum; i++) {
+            set.add(i);
+        }
+        return getPowerSet(set);
+    }
+    
+    /**
+     * Returns the power set of the given set
      * 
      * @param <T> the generic type
      * @param set the set
-     * @return the powerset
+     * @return the power set
      */
-    private <T> Set<Set<T>> getPowerSet(final Set<T> set) {
-        final Set<Set<T>> sets = new HashSet<Set<T>>();
+    private <T> Set<Set<T>> getPowerSet(Set<T> set) {
+        Set<Set<T>> sets = new HashSet<Set<T>>();
         if (set.isEmpty()) {
             sets.add(new HashSet<T>());
             return sets;
         }
-        final List<T> list = new ArrayList<T>(set);
-        final T head = list.get(0);
-        final Set<T> rest = new HashSet<T>(list.subList(1, list.size()));
-        for (final Set<T> tset : getPowerSet(rest)) {
-            final Set<T> newSet = new HashSet<T>();
+        List<T> list = new ArrayList<T>(set);
+        T head = list.get(0);
+        Set<T> rest = new HashSet<T>(list.subList(1, list.size()));
+        for (Set<T> tset : getPowerSet(rest)) {
+            Set<T> newSet = new HashSet<T>();
             newSet.add(head);
             newSet.addAll(tset);
             sets.add(newSet);
             sets.add(tset);
         }
         return sets;
+    }
+
+    /**
+     * Checks if the array is a superset of the given array of indices
+     * 
+     * @param subset the subset
+     * @param superset the potential superset
+     * @return true, if is super set
+     */
+    private boolean isSuperSet(int[] subset, int[] superset) {
+        boolean isSuperset = true;
+        int g = 0;
+        for (int j = 0; j < subset.length; j++) {
+            if (subset[j] == superset[g]) {
+                g++;
+                if (g == superset.length) {
+                    break;
+                }
+            } else if (subset[j] > superset[g]) {
+                isSuperset = false;
+                break;
+            }
+        }
+        if (isSuperset && (g < superset.length)) {
+            isSuperset = false;
+        }
+        return isSuperset;
+    }
+
+    /**
+     * Prunes parts of the new search space, based on results from previous iterations
+     * @param context
+     * @param currentSubset
+     */
+    private void prune(IncognitoContext context, int[] currentSubset) {
+        
+        // Prepare
+        ArrayList<Node> nodes = context.getNonAnonymousNodes();
+        ArrayList<int[]> transformations = context.getNonAnonymousTransformations();
+        
+        // For each transformation that was determined to be non-anonymous previously
+        for (int i = 0; i < nodes.size(); i++) {
+
+            // Obtain data about previous non-anonymous transformation
+            int[] previousTransformation = nodes.get(i).getTransformation();
+            int[] previousSubset = transformations.get(i);
+
+            // Check if current subset is superset of previous non-anonymous transformation
+            if (isSuperSet(currentSubset, previousSubset)) {
+
+                // Obtain clone of top-node in current lattice
+                Node[][] localLevels = context.getLevels();
+                int[] localTransformation = localLevels[localLevels.length - 1][0].getTransformation().clone();
+
+                // Adjust current transformation to match current lattice
+                for (int j = 0; j < currentSubset.length; j++) {
+                    for (int j2 = 0; j2 < previousSubset.length; j2++) {
+                        if (currentSubset[j] == previousSubset[j2]) {
+                            localTransformation[j] = previousTransformation[j2];
+                        }
+                    }
+                }
+
+                // Tag
+                Node localNode = context.getLocalMap().get(localTransformation);
+                setAnonymous(context.getLocalLattice(), localNode, false);
+                tag(context.getLocalLattice(), localNode);
+            }
+        }
     }
 }

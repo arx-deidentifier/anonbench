@@ -23,17 +23,17 @@ package org.deidentifier.arx.algorithm;
 import org.deidentifier.arx.framework.lattice.Node;
 
 /**
- * This class implements a map from arrays representing transformations to the actual node object
+ * This class implements a map from arrays representing transformations to the actual node objects
  * 
  * @author Prasser, Kohlmayer
  */
-public class OLALatticeNodeMap {
+public class NodeMap {
 
     /** The array. */
     public final Node[] array;
 
     /** The max indices. */
-    private final int[] maxIndices;
+    private final int[] max;
 
     /** The offsets. */
     private final int[] offsets;
@@ -41,17 +41,17 @@ public class OLALatticeNodeMap {
     /**
      * Instantiates a new lattice node map.
      * 
-     * @param max the max
+     * @param _max the max
      */
-    public OLALatticeNodeMap(final int[] max) {
-        maxIndices = new int[max.length];
-        offsets = new int[max.length];
+    public NodeMap(final int[] _max) {
+        max = new int[_max.length];
+        offsets = new int[_max.length];
 
         int size = 1;
-        for (int i = 0; i < max.length; i++) {
+        for (int i = 0; i < _max.length; i++) {
             offsets[i] = size;
-            size *= max[i];
-            maxIndices[i] = max[i] - 1;
+            size *= _max[i];
+            max[i] = _max[i] - 1;
         }
         array = new Node[size];
     }
@@ -63,42 +63,10 @@ public class OLALatticeNodeMap {
      * @param offsets the offsets
      * @param max the max indices
      */
-    public OLALatticeNodeMap(final Node[] array,
-                             final int[] offsets,
-                             final int[] max) {
+    public NodeMap(final Node[] array, final int[] offsets, final int[] max) {
         this.offsets = offsets;
         this.array = array;
-        this.maxIndices = max;
-    }
-
-    /**
-     * Calculate array from index.
-     * 
-     * @param n the n
-     * @return the int[]
-     */
-    public final int[] calculateArrayFromIndex(int n) {
-        final int[] state = new int[maxIndices.length];
-        for (int i = state.length - 1; i >= 0; i--) {
-            state[i] = n / offsets[i];
-            n -= state[i] * offsets[i];
-        }
-        return state;
-    }
-
-    /**
-     * Calculate index from array.
-     * 
-     * @param indices the indices
-     * @return the int
-     */
-    public final int calculateIndexFromArray(final int[] indices) {
-        int index = 0;
-        for (int i = 0; i < indices.length; i++) {
-            if (indices[i] > maxIndices[i]) { return -1; }
-            index += offsets[i] * indices[i];
-        }
-        return index;
+        this.max = max;
     }
 
     /**
@@ -108,7 +76,7 @@ public class OLALatticeNodeMap {
      * @return the node
      */
     public Node get(final int[] key) {
-        final int index = calculateIndexFromArray(key);
+        final int index = getIndex(key);
         if (index == -1) {
             return null;
         } else {
@@ -123,7 +91,22 @@ public class OLALatticeNodeMap {
      * @param value the value
      */
     public void put(final int[] key, final Node value) {
-        final int index = calculateIndexFromArray(key);
+        final int index = getIndex(key);
         array[index] = value;
+    }
+
+    /**
+     * Calculate index from array.
+     * 
+     * @param indices the indices
+     * @return the int
+     */
+    private final int getIndex(final int[] indices) {
+        int index = 0;
+        for (int i = 0; i < indices.length; i++) {
+            if (indices[i] > max[i]) { return -1; }
+            index += offsets[i] * indices[i];
+        }
+        return index;
     }
 }

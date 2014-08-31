@@ -26,17 +26,17 @@ import java.util.List;
 import org.deidentifier.arx.framework.lattice.Node;
 
 /**
- * This class is used for building sublattices
+ * This class is used for building sub-lattices
  * 
  * @author Prasser, Kohlmayer
  */
 public class OLASublatticeBuilder {
 
     /** The map. */
-    private OLALatticeNodeMap map   = null;
+    private NodeMap    map   = null;
 
     /** The nodes. */
-    private List<Node>        nodes = null;
+    private List<Node> nodes = null;
 
     /**
      * Instantiates a new sublattice builder.
@@ -44,16 +44,16 @@ public class OLASublatticeBuilder {
      * @param map
      *            the map
      */
-    public OLASublatticeBuilder(final OLALatticeNodeMap map) {
+    public OLASublatticeBuilder(final NodeMap map) {
         this.map = map;
     }
 
     /**
-     * Builds a sublattice
+     * Builds a sub-lattice
      * 
      * @param bottom the bottom
      * @param top the top
-     * @param midlevel the midlevel
+     * @param midlevel the mid-level
      * @return the list
      */
     public List<Node> build(final int[] bottom,

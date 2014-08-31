@@ -26,11 +26,12 @@ import java.util.List;
 import org.deidentifier.arx.framework.lattice.Node;
 
 /**
- * This class implements an iterator, that enumerates nodes on mid-level of a given lattice
+ * This class implements an iterator, that enumerates nodes 
+ * on mid-level of a given lattice
  * 
  * @author Prasser, Kohlmayer
  */
-public class OLASublatticeNodeIterator implements Iterator<Node> {
+public class OLASublatticeIterator implements Iterator<Node> {
 
     /** The builder. */
     private OLASublatticeBuilder builder  = null;
@@ -49,12 +50,13 @@ public class OLASublatticeNodeIterator implements Iterator<Node> {
      * @param top the top
      * @param midLevel the mid level
      */
-    public OLASublatticeNodeIterator(final OLALatticeNodeMap map,
+    public OLASublatticeIterator(final NodeMap map,
                                      final Node bottom,
                                      final Node top,
                                      final int midLevel) {
         builder = new OLASublatticeBuilder(map);
-        midNodes = builder.build(bottom.getTransformation(), top.getTransformation(), midLevel);
+        midNodes = builder.build(bottom.getTransformation(), 
+                                 top.getTransformation(), midLevel);
         index = midNodes.size() - 1;
     }
 
@@ -85,6 +87,6 @@ public class OLASublatticeNodeIterator implements Iterator<Node> {
      */
     @Override
     public void remove() {
-        // Empty by design
+        throw new UnsupportedOperationException("Not supported");
     }
 }
