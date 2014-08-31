@@ -6,4 +6,4 @@ test -e /sys/devices/system/cpu/$f/cpufreq/scaling_governor && echo performance 
 done
 
 #run benchmark
-java -Xmx4G -XX:+UseConcMarkSweepGC -jar jars/anonbench-0.1.jar
+java -Xmx4G -XX:+UseConcMarkSweepGC -jar jars/anonbench-0.2.jar
