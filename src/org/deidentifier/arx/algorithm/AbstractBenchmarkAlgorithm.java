@@ -23,6 +23,7 @@ package org.deidentifier.arx.algorithm;
 import org.deidentifier.arx.framework.check.INodeChecker;
 import org.deidentifier.arx.framework.lattice.Lattice;
 import org.deidentifier.arx.framework.lattice.Node;
+import org.deidentifier.arx.metric.Metric;
 
 /**
  * Abstract base class for algorithms used in the benchmark
@@ -47,11 +48,11 @@ public abstract class AbstractBenchmarkAlgorithm extends AbstractAlgorithm {
     }
 
     /**
-     * Returns the number of potential rollups
-     * @return
+     * Returns the metric used for measuring information loss
+     * @return 
      */
-    public int getNumRollups() {
-        return rollups;
+    public Metric<?> getMetric(){
+        return checker.getMetric();
     }
     
     /**
@@ -62,6 +63,14 @@ public abstract class AbstractBenchmarkAlgorithm extends AbstractAlgorithm {
         return checks;
     }
 
+    /**
+     * Returns the number of potential rollups
+     * @return
+     */
+    public int getNumRollups() {
+        return rollups;
+    }
+    
     /**
      * Performs a check and keeps track of potential rollups
      * @param node
