@@ -88,21 +88,6 @@ public class BenchmarkAnalysis {
     }
 
     /**
-     * Generate the tables
-     * @throws IOException 
-     * @throws ParseException 
-     */
-    private static void generateTables() throws IOException, ParseException {
-
-        CSVFile file = new CSVFile(new File("results/results.csv"));
-        
-        // For each variable
-        generateTable(file, VARIABLES[0], true);
-        generateTable(file, VARIABLES[1], false);
-        generateTable(file, VARIABLES[2], true);
-    }
-
-    /**
      * Generates a single table
      * @param file
      * @param variable
@@ -198,6 +183,21 @@ public class BenchmarkAnalysis {
         
         // Write to file
         csv.write(new File("results/table_"+variable.toLowerCase().replaceAll(" ", "_")+".csv"));
+    }
+
+    /**
+     * Generate the tables
+     * @throws IOException 
+     * @throws ParseException 
+     */
+    private static void generateTables() throws IOException, ParseException {
+
+        CSVFile file = new CSVFile(new File("results/results.csv"));
+        
+        // For each variable
+        generateTable(file, VARIABLES[0], true);
+        generateTable(file, VARIABLES[1], false);
+        generateTable(file, VARIABLES[2], true);
     }
 
     /**

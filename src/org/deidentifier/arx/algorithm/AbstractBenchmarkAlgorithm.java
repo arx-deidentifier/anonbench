@@ -121,6 +121,29 @@ public abstract class AbstractBenchmarkAlgorithm extends AbstractAlgorithm {
     }
     
     /**
+     * Tags a transformation
+     * @param node
+     * @param lattice
+     * @param anonymous
+     */
+    protected void setAnonymous(Lattice lattice, Node node, boolean anonymous) {
+        if (anonymous) {
+            lattice.setProperty(node, Node.PROPERTY_ANONYMOUS);
+        } else {
+            lattice.setProperty(node, Node.PROPERTY_NOT_ANONYMOUS);
+        }
+    }
+    
+    /**
+     * Tags a transformation
+     * @param node
+     * @param anonymous
+     */
+    protected void setAnonymous(Node node, boolean anonymous) {
+        setAnonymous(lattice, node, anonymous);
+    }
+    
+    /**
      * Predictively tags the search space with the node's anonymity property
      * @param node
      * @param lattice
@@ -133,36 +156,13 @@ public abstract class AbstractBenchmarkAlgorithm extends AbstractAlgorithm {
             tagNotAnonymous(lattice, node);
         }
     }
-    
+
     /**
      * Predictively tags the search space with the node's anonymity property
      * @param node
      */
     protected void tag(Node node){
         tag(lattice, node);
-    }
-    
-    /**
-     * Tags a transformation
-     * @param node
-     * @param anonymous
-     */
-    protected void setAnonymous(Node node, boolean anonymous) {
-        setAnonymous(lattice, node, anonymous);
-    }
-
-    /**
-     * Tags a transformation
-     * @param node
-     * @param lattice
-     * @param anonymous
-     */
-    protected void setAnonymous(Lattice lattice, Node node, boolean anonymous) {
-        if (anonymous) {
-            lattice.setProperty(node, Node.PROPERTY_ANONYMOUS);
-        } else {
-            lattice.setProperty(node, Node.PROPERTY_NOT_ANONYMOUS);
-        }
     }
 
     /**

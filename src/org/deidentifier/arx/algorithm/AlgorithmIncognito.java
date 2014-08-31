@@ -48,16 +48,6 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
 
     /**
      * Instantiates a new incognito algorithm.
-     * 
-     * @param lattice the lattice
-     * @param checker the checker
-     */
-    private AlgorithmIncognito(final Lattice lattice, final INodeChecker checker) {
-        super(lattice, checker);
-    }
-
-    /**
-     * Instantiates a new incognito algorithm.
      * @param lattice
      * @param manager
      * @param metric
@@ -72,39 +62,13 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
     }
 
     /**
-     * Checks a node
+     * Instantiates a new incognito algorithm.
      * 
-     * @param checker
-     * @param node
+     * @param lattice the lattice
+     * @param checker the checker
      */
-    private Result check(NodeChecker checker, Node node) {
-
-        Result result = checker.check(node);
-        checks++;
-
-        // Store
-        if (previous == null) {
-            previous = node;
-            return result;
-        }
-
-        // Check if successor
-        boolean successor = true;
-        for (int i = 0; i < node.getTransformation().length; i++) {
-            if (node.getTransformation()[i] < previous.getTransformation()[i]) {
-                successor = false;
-            }
-        }
-
-        previous = node;
-
-        // Count
-        if (successor) {
-            rollups++;
-        }
-        
-        // Return
-        return result;
+    private AlgorithmIncognito(final Lattice lattice, final INodeChecker checker) {
+        super(lattice, checker);
     }
 
     /**
@@ -274,6 +238,42 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
                 }
             }
         }
+    }
+
+    /**
+     * Checks a node
+     * 
+     * @param checker
+     * @param node
+     */
+    private Result check(NodeChecker checker, Node node) {
+
+        Result result = checker.check(node);
+        checks++;
+
+        // Store
+        if (previous == null) {
+            previous = node;
+            return result;
+        }
+
+        // Check if successor
+        boolean successor = true;
+        for (int i = 0; i < node.getTransformation().length; i++) {
+            if (node.getTransformation()[i] < previous.getTransformation()[i]) {
+                successor = false;
+            }
+        }
+
+        previous = node;
+
+        // Count
+        if (successor) {
+            rollups++;
+        }
+        
+        // Return
+        return result;
     }
 
     /**
