@@ -66,6 +66,7 @@ public abstract class TestAbstract extends TestCase {
         // For each algorithm
         for (BenchmarkAlgorithm algorithm : BenchmarkSetup.getAlgorithms()) {
             
+            // Skip BFS, as it simply takes too long
             if (algorithm == BenchmarkAlgorithm.BFS) {
                 continue;
             }
