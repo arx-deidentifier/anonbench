@@ -157,23 +157,18 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
                     Node globalNode = getGlobalNode(globalLattice, subset, localNode);
 
                     // Check
-                    globalLattice.getLattice().setChecked(globalNode, check(checker, globalNode));
+                    context.getLocalLattice().setChecked(localNode, check(checker, globalNode));
+                    tag(context.getLocalLattice(), localNode);
                     
-                    // Track
-                    if (context.getLattice() == globalLattice) {
-                        trackOptimum(globalNode);
-                    }
-
                     // And tag
-                    if (isAnonymous(globalNode)) {
-                        setAnonymous(context.getLocalLattice(), localNode, true);
-                        tag(context.getLocalLattice(), localNode);
-                        context.getLocalLattice().setInformationLoss(localNode, globalNode.getInformationLoss());
-                    } else {    
-                        setAnonymous(context.getLocalLattice(), localNode, false);
-                        tag(context.getLocalLattice(), localNode);
+                    if (!isAnonymous(localNode)) {
                         context.getNonAnonymousNodes().add(localNode);
                         context.getNonAnonymousTransformations().add(subset);
+                    }
+                    
+                    // Track optimum
+                    if (context.getLattice() == globalLattice) {
+                        trackOptimum(globalNode);
                     }
                 }
             }
