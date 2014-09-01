@@ -1,12 +1,12 @@
 Introduction
 ------
-This project contains the source code for the benchmark presented in our submission
-"A Benchmark of Globally-Optimal Anonymization Methods for Biomedical Data" for the
+This project contains the source code for the benchmark presented in our paper
+"A Benchmark of Globally-Optimal Anonymization Methods for Biomedical Data" at the
 27th IEEE International Symposium on Computer-Based Medical Systems (CBMS 2014).
 
 The source code comprises our benchmarking environment, which is based upon
-the [ARX](http://arx.deidentifier.org/) and [subframe](https://github.com/prasser/subframe) 
-frameworks. Moreover, the repository contains implementations of the following algorithms:
+[ARX](http://arx.deidentifier.org/) and [subframe](https://github.com/prasser/subframe).
+The benchmark currently provides implementations of the following globally-optimal anonymization algorithms:
 
 1. [Depth-First-Search](http://en.wikipedia.org/wiki/Depth-first_search): the implementation can be found [here](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmDFS.java).
 
@@ -21,13 +21,13 @@ frameworks. Moreover, the repository contains implementations of the following a
 
 Privacy criteria
 ------
-All 11 reasonable combinations of the following privacy criteria are included in our benchmark:
+All 11 reasonable combinations of the following privacy criteria are evaluated in our benchmark:
 
 1. [5-anonymity](http://dx.doi.org/10.1142/S0218488502001648)
 
 2. [recursive-(4,3)-diversity](http://dx.doi.org/10.1145/1217299.1217302)
 
-3. [hierarchical-distance-0.2-closeness](http://dx.doi.org/10.1109/ICDE.2007.367856)
+3. [0.2-closeness (EMD with hierarchical distance)](http://dx.doi.org/10.1109/ICDE.2007.367856)
 
 4. [(0.05, 0.15)-presence](http://dx.doi.org/10.1145/1247480.1247554)
 
@@ -42,14 +42,13 @@ Results
 
 The following figures show key parameters averaged over either the datasets or the privacy 
 criteria. The number of checks gives an indication of an algorithm's pruning power, the 
-number of rollups gives an indication of an algorithm's optimizability and, finally, the 
-execution times gives an indication of an algorithm's overall performance.
+number of roll-ups gives an indication of an algorithm's optimizability and, finally, the 
+execution times give an indication of an algorithm's overall performance within the ARX runtime environment.
 
 On a Desktop PC with a quad-core 3.1 GHz Intel Core i5 CPU running a 64-bit Linux 3.0.14 kernel and a
-64-bit Sun JVM (1.7.0 21) executed with *java -Xmx4G -XX:+UseConcMarkSweepGC -jar anonbench-0.2.jar* the following results are produced:
+64-bit Sun JVM (1.7.0 21) the following results are produced (*java -Xmx4G -XX:+UseConcMarkSweepGC -jar anonbench-0.2.jar*):
 
 Geometric mean of key parameters over all five benchmark datasets:
-![Image](https://raw.github.com/arx-deidentifier/anonbench/master/doc/legend.png)
 ![Image](https://raw.github.com/arx-deidentifier/anonbench/master/doc/mean_check_criteria.png)
 ![Image](https://raw.github.com/arx-deidentifier/anonbench/master/doc/mean_rollup_criteria.png)
 ![Image](https://raw.github.com/arx-deidentifier/anonbench/master/doc/mean_time_criteria.png)
