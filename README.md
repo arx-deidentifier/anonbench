@@ -64,6 +64,14 @@ Geometric mean of key parameters over all eleven combinations of privacy criteri
 
 ![Image](https://raw.github.com/arx-deidentifier/anonbench/master/doc/mean_time_datasets.png)
 
+Changelog
+------
+
+Since the publication of the paper, we have updated anonbench 0.1, which was based on ARX 2.0.0, to anonbench 
+0.2, which is based on ARX 2.3.0. Due to bugfixes and various performance-related changes in ARX the results of the 
+benchmark have changed slightly in this process. We note, however, that all conclusions drawn from our original
+results are still valid and strongly recommend using the latest version of anonbench.  
+
 Downloads
 ------
 [Library (Version 0.2)](https://raw.github.com/arx-deidentifier/anonbench/master/jars/anonbench-0.2.jar)
