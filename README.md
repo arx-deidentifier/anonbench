@@ -49,13 +49,19 @@ On a Desktop PC with a quad-core 3.1 GHz Intel Core i5 CPU running a 64-bit Linu
 64-bit Sun JVM (1.7.0 21) the following results are produced (*java -Xmx4G -XX:+UseConcMarkSweepGC -jar anonbench-0.2.jar*):
 
 Geometric mean of key parameters over all five benchmark datasets:
+
 ![Image](https://raw.github.com/arx-deidentifier/anonbench/master/doc/mean_check_criteria.png)
+
 ![Image](https://raw.github.com/arx-deidentifier/anonbench/master/doc/mean_rollup_criteria.png)
+
 ![Image](https://raw.github.com/arx-deidentifier/anonbench/master/doc/mean_time_criteria.png)
 
 Geometric mean of key parameters over all eleven combinations of privacy criteria:
+
 ![Image](https://raw.github.com/arx-deidentifier/anonbench/master/doc/mean_check_datasets.png)
+
 ![Image](https://raw.github.com/arx-deidentifier/anonbench/master/doc/mean_rollup_datasets.png)
+
 ![Image](https://raw.github.com/arx-deidentifier/anonbench/master/doc/mean_time_datasets.png)
 
 Downloads
