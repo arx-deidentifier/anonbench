@@ -1,11 +1,11 @@
 Introduction
 ------
 This project contains the source code for the benchmark presented in our paper
-"A Benchmark of Globally-Optimal Anonymization Methods for Biomedical Data" at the
-27th IEEE International Symposium on Computer-Based Medical Systems (CBMS 2014).
+[A Benchmark of Globally-Optimal Anonymization Methods for Biomedical Data](http://dx.doi.org/10.1109/CBMS.2014.85) 
+at the 27th IEEE International Symposium on Computer-Based Medical Systems (CBMS 2014).
 
 The source code comprises our benchmarking environment, which is based upon
-[ARX](http://arx.deidentifier.org/) and [subframe](https://github.com/prasser/subframe).
+[ARX](http://arx.deidentifier.org/) and [SUBFRAME](https://github.com/prasser/subframe).
 The benchmark currently provides implementations of the following globally-optimal anonymization algorithms:
 
 1. [Depth-First-Search](http://en.wikipedia.org/wiki/Depth-first_search): the implementation can be found [here](https://github.com/arx-deidentifier/anonbench/blob/master/src/org/deidentifier/arx/algorithm/AlgorithmDFS.java).
