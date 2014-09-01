@@ -3,11 +3,11 @@
 [k];OLA (22%) Flash;OLA (33%) Flash;OLA (9%) Flash;OLA (4%) Flash;Flash (14%) OLA
 [l];OLA (20%) Flash;OLA (29%) Flash;OLA (20%) Flash;OLA (21%) Flash;Flash (28%) OLA
 [t];OLA (48%) Flash;OLA (44%) Flash;OLA (36%) Flash;OLA (41%) Flash;Flash (30%) OLA
-[d];OLA (25%) Flash;OLA (46%) Flash;OLA (19%) Flash;OLA (17%) Flash;Flash (30%) DFS
+[d];OLA (21%) Flash;OLA (46%) Flash;OLA (38%) Flash;OLA (18%) Flash;Flash (25%) DFS
 [k, l];OLA (22%) Flash;OLA (33%) Flash;OLA (28%) Flash;OLA (26%) Flash;Flash (37%) OLA
 [k, t];OLA (48%) Flash;OLA (44%) Flash;OLA (36%) Flash;OLA (41%) Flash;Flash (30%) OLA
 [k, d];OLA (33%) Flash;OLA (30%) Flash;OLA (19%) Flash;OLA (15%) Flash;Flash (23%) DFS
 [d, l];OLA (33%) Flash;OLA (28%) Flash;OLA (34%) Flash;OLA (30%) Flash;Flash (30%) DFS
-[d, t];OLA (48%) Flash;OLA (43%) Flash;OLA (40%) Flash;OLA (50%) Flash;Flash (46%) DFS
+[d, t];OLA (48%) Flash;OLA (46%) Flash;OLA (40%) Flash;OLA (50%) Flash;Flash (46%) DFS
 [k, d, l];OLA (34%) Flash;OLA (30%) Flash;OLA (36%) Flash;OLA (30%) Flash;Flash (30%) DFS
 [k, d, t];OLA (48%) Flash;OLA (43%) Flash;OLA (40%) Flash;OLA (50%) Flash;Flash (46%) DFS

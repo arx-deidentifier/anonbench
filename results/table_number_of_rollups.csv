@@ -3,11 +3,11 @@
 [k];DFS (50%) Flash;DFS (71%) Flash;DFS (59%) Flash;DFS (50%) Flash;DFS (47%) Flash
 [l];DFS (50%) Flash;DFS (70%) Flash;DFS (54%) Flash;DFS (65%) Flash;DFS (57%) Flash
 [t];DFS (59%) Flash;DFS (71%) Incognito;DFS (73%) Flash;DFS (51%) Flash;DFS (58%) Flash
-[d];DFS (51%) Flash;DFS (68%) Flash;DFS (55%) Flash;DFS (49%) Flash;DFS (55%) Flash
+[d];DFS (55%) Flash;DFS (72%) Incognito;DFS (61%) Flash;DFS (48%) Flash;DFS (56%) Flash
 [k, l];DFS (52%) Flash;DFS (71%) Flash;DFS (58%) Flash;DFS (64%) Flash;DFS (57%) Flash
 [k, t];DFS (59%) Flash;DFS (71%) Incognito;DFS (73%) Flash;DFS (51%) Flash;DFS (58%) Flash
 [k, d];DFS (60%) Flash;DFS (74%) Flash;DFS (59%) Flash;DFS (58%) Flash;DFS (52%) Flash
 [d, l];DFS (54%) Flash;DFS (74%) Flash;DFS (58%) Flash;DFS (67%) Flash;DFS (55%) Flash
-[d, t];DFS (65%) Flash;DFS (73%) Flash;DFS (73%) Flash;DFS (68%) Flash;DFS (62%) Flash
+[d, t];DFS (65%) Flash;DFS (72%) Incognito;DFS (73%) Flash;DFS (68%) Flash;DFS (62%) Flash
 [k, d, l];DFS (58%) Flash;DFS (74%) Flash;DFS (58%) Flash;DFS (67%) Flash;DFS (55%) Flash
 [k, d, t];DFS (65%) Flash;DFS (73%) Flash;DFS (73%) Flash;DFS (68%) Flash;DFS (62%) Flash
