@@ -20,7 +20,7 @@
 
 package org.deidentifier.arx.algorithm;
 
-import org.deidentifier.arx.ARXConfiguration;
+import org.deidentifier.arx.ARXConfiguration.ARXConfigurationInternal;
 import org.deidentifier.arx.framework.data.DataManager;
 import org.deidentifier.arx.metric.Metric;
 
@@ -44,7 +44,7 @@ public class IncognitoNodeChecker extends org.deidentifier.arx.framework.check.N
      */
     public IncognitoNodeChecker(final DataManager manager,
                                 final Metric<?> metric,
-                                final ARXConfiguration config,
+                                final ARXConfigurationInternal config,
                                 final int historyMaxSize,
                                 final double historyThreshold,
                                 final double snapshotSizeSnapshot) {

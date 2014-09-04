@@ -159,7 +159,7 @@ public class BenchmarkDriver {
         if (algorithm != BenchmarkAlgorithm.INCOGNITO){
             checker = new NodeChecker(  manager,
                                         config.getMetric(),
-                                        config,
+                                        config.getInternalConfiguration(),
                                         historySize,
                                         snapshotSizeDataset,
                                         snapshotSizeSnapshot);
@@ -186,7 +186,7 @@ public class BenchmarkDriver {
         case INCOGNITO:
             implementation = new AlgorithmIncognito(lattice, manager,
                                                              config.getMetric(),
-                                                             config,
+                                                             config.getInternalConfiguration(),
                                                              historySize,
                                                              snapshotSizeDataset,
                                                              snapshotSizeSnapshot);

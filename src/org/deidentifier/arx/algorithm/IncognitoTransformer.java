@@ -20,7 +20,7 @@
 
 package org.deidentifier.arx.algorithm;
 
-import org.deidentifier.arx.ARXConfiguration;
+import org.deidentifier.arx.ARXConfiguration.ARXConfigurationInternal;
 import org.deidentifier.arx.framework.check.StateMachine.TransitionType;
 import org.deidentifier.arx.framework.check.Transformer;
 import org.deidentifier.arx.framework.check.distribution.IntArrayDictionary;
@@ -62,7 +62,7 @@ public class IncognitoTransformer extends Transformer {
                                 final GeneralizationHierarchy[] hierarchies,
                                 final int numQis,
                                 final int[][] sensValues,
-                                final ARXConfiguration config,
+                                final ARXConfigurationInternal config,
                                 final IntArrayDictionary dictVal,
                                 final IntArrayDictionary dictFreq) {
         super(data, hierarchies, sensValues, config, dictVal, dictFreq);

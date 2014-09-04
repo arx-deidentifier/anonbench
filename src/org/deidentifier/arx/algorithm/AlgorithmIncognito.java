@@ -26,7 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.deidentifier.arx.ARXConfiguration;
+import org.deidentifier.arx.ARXConfiguration.ARXConfigurationInternal;
 import org.deidentifier.arx.framework.check.INodeChecker;
 import org.deidentifier.arx.framework.check.INodeChecker.Result;
 import org.deidentifier.arx.framework.check.NodeChecker;
@@ -60,7 +60,7 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
      * @param snapshotSizeDataset
      * @param snapshotSizeSnapshot
      */
-    public AlgorithmIncognito(Lattice lattice, DataManager manager, Metric<?> metric, ARXConfiguration config, int historySize, double snapshotSizeDataset, double snapshotSizeSnapshot) {
+    public AlgorithmIncognito(Lattice lattice, DataManager manager, Metric<?> metric, ARXConfigurationInternal config, int historySize, double snapshotSizeDataset, double snapshotSizeSnapshot) {
         this(lattice, metric, new IncognitoNodeChecker(manager, Metric.createHeightMetric(), config, historySize, snapshotSizeDataset, snapshotSizeSnapshot));
     }
 
