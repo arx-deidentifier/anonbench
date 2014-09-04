@@ -29,6 +29,7 @@ import java.util.Set;
 import org.deidentifier.arx.ARXConfiguration;
 import org.deidentifier.arx.framework.check.INodeChecker;
 import org.deidentifier.arx.framework.check.INodeChecker.Result;
+import org.deidentifier.arx.framework.check.history.History;
 import org.deidentifier.arx.framework.check.NodeChecker;
 import org.deidentifier.arx.framework.data.DataManager;
 import org.deidentifier.arx.framework.lattice.Lattice;
@@ -73,6 +74,8 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
     private AlgorithmIncognito(Lattice lattice, Metric<?> metric, INodeChecker checker) {
         super(lattice, checker);
         this.metric = metric;
+        // Set strategy
+        checker.getHistory().setStorageTrigger(History.STORAGE_TRIGGER_ALL);
     }
 
     /*

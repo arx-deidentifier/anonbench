@@ -21,6 +21,7 @@
 package org.deidentifier.arx.algorithm;
 
 import org.deidentifier.arx.framework.check.INodeChecker;
+import org.deidentifier.arx.framework.check.history.History;
 import org.deidentifier.arx.framework.lattice.Lattice;
 import org.deidentifier.arx.framework.lattice.Node;
 
@@ -41,6 +42,8 @@ public class AlgorithmDFS extends AbstractBenchmarkAlgorithm {
      */
     public AlgorithmDFS(final Lattice lattice, final INodeChecker checker) {
         super(lattice, checker);
+        // Set strategy
+        checker.getHistory().setStorageTrigger(History.STORAGE_TRIGGER_ALL);
     }
 
     /*

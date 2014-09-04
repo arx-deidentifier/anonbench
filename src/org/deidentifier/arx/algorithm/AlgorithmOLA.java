@@ -23,6 +23,7 @@ package org.deidentifier.arx.algorithm;
 import java.util.Iterator;
 
 import org.deidentifier.arx.framework.check.INodeChecker;
+import org.deidentifier.arx.framework.check.history.History;
 import org.deidentifier.arx.framework.lattice.Lattice;
 import org.deidentifier.arx.framework.lattice.Node;
 
@@ -85,6 +86,9 @@ public class AlgorithmOLA extends AbstractBenchmarkAlgorithm {
         for (int i = 0; i < memoization.length; i++) {
             memoization[i] = new OLAFastBitSet(memoization.length + 1);
         }
+        
+        // Set strategy
+        checker.getHistory().setStorageTrigger(History.STORAGE_TRIGGER_NON_ANONYMOUS);
     }
 
     /**
