@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 import org.deidentifier.arx.framework.check.INodeChecker;
+import org.deidentifier.arx.framework.check.history.History;
 import org.deidentifier.arx.framework.data.GeneralizationHierarchy;
 import org.deidentifier.arx.framework.lattice.Lattice;
 import org.deidentifier.arx.framework.lattice.Node;
@@ -73,6 +74,8 @@ public class AlgorithmFlash extends AbstractBenchmarkAlgorithm {
         this.pqueue = new PriorityQueue<Node>(11, strategy);
         this.sorted = new boolean[lattice.getSize()];
         this.path = new ArrayList<Node>();
+        // Set strategy
+        checker.getHistory().setStorageTrigger(History.STORAGE_TRIGGER_NON_ANONYMOUS);
     }
 
     /*
