@@ -1,7 +1,7 @@
 /*
- * Source code of our CBMS 2014 paper "A benchmark of globally-optimal 
- *      methods for the de-identification of biomedical data"
- *      
+ * Source code of our CBMS 2014 paper "A benchmark of globally-optimal
+ * methods for the de-identification of biomedical data"
+ * 
  * Copyright (C) 2014 Florian Kohlmayer, Fabian Prasser
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -57,10 +57,10 @@ public class AlgorithmBFS extends AbstractBenchmarkAlgorithm {
         final int length = lattice.getLevels().length;
         for (int i = 0; i < length; i++) {
             final Node[] level = lattice.getLevels()[i];
-            
+
             // For each node
             for (final Node node : level) {
-                
+
                 // Check and tag
                 if (!isTagged(node)) {
                     check(node);

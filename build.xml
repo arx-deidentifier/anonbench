@@ -28,9 +28,9 @@
     <target name="javadoc" depends="clean-javadoc">
         <javadoc destdir="tmpdoc" source="1.7" notree="false" nonavbar="false" noindex="false" splitindex="true" access="public" use="true" author="Fabian Praßer" version="0.2" windowtitle="AnonBench" private="false" failonerror="true">
             <classpath>
-				<path path="lib/subframe-0.2-lib.jar"/>
-				<path path="lib/libarx-2.3.0-alpha1.jar"/>
-            	<path path="lib/junit-4.11.jar"/>
+                <path path="lib/subframe-0.2-lib.jar"/>
+                <path path="lib/libarx-2.3.1-alpha1.jar"/>
+                <path path="lib/junit-4.11.jar"/>
             	<path path="lib/hamcrest-core-1.3.jar"/>
                 <path path="src/"/>
             </classpath>
@@ -42,9 +42,9 @@
     <target name="compile" depends="prepare" description="compile the source ">
         <javac srcdir="src/" destdir="build/">
             <classpath>
-            	<path path="lib/subframe-0.2-lib.jar"/>
-            	<path path="lib/libarx-2.3.0-alpha1.jar"/>
-            	<path path="lib/junit-4.11.jar"/>
+                <path path="lib/subframe-0.2-lib.jar"/>
+                <path path="lib/libarx-2.3.1-alpha1.jar"/>
+                <path path="lib/junit-4.11.jar"/>
             	<path path="lib/hamcrest-core-1.3.jar"/>
                 <path path="src/" />
             </classpath>
@@ -54,7 +54,7 @@
     <target name="jars" depends="compile, javadoc">
         <jar destfile="jars/anonbench-0.2.jar">
             <zipfileset src="lib/subframe-0.2-lib.jar" excludes="META-INF/*.SF" />
-            <zipfileset src="lib/libarx-2.3.0-alpha1.jar" excludes="META-INF/*.SF" />
+            <zipfileset src="lib/libarx-2.3.1-alpha1.jar" excludes="META-INF/*.SF" />
         	<zipfileset src="lib/junit-4.11.jar" excludes="META-INF/*.SF" />
         	<zipfileset src="lib/hamcrest-core-1.3.jar" excludes="META-INF/*.SF" />
             <fileset dir="build" defaultexcludes="no">

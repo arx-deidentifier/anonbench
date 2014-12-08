@@ -29,8 +29,8 @@ import java.util.Set;
 import org.deidentifier.arx.ARXConfiguration.ARXConfigurationInternal;
 import org.deidentifier.arx.framework.check.INodeChecker;
 import org.deidentifier.arx.framework.check.INodeChecker.Result;
-import org.deidentifier.arx.framework.check.history.History;
 import org.deidentifier.arx.framework.check.NodeChecker;
+import org.deidentifier.arx.framework.check.history.History;
 import org.deidentifier.arx.framework.data.DataManager;
 import org.deidentifier.arx.framework.lattice.Lattice;
 import org.deidentifier.arx.framework.lattice.LatticeBuilder;
@@ -41,16 +41,16 @@ import org.deidentifier.arx.metric.Metric;
  * This class implements the Incognito algorithm proposed in:<br>
  * <br>
  * K. LeFevre et al. "Incognito: efficient full-domain K-anonymity".
- * Proceedings of the 2005 ACM SIGMOD international Conference on Management of Data, 49-60. 
+ * Proceedings of the 2005 ACM SIGMOD international Conference on Management of Data, 49-60.
  * 
  * @author Fabian Prasser
  * @author Florian Kohlmayer
  */
 public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
 
-    /** The metric to be used by this algorithm*/
+    /** The metric to be used by this algorithm */
     private Metric<?> metric;
-    
+
     /**
      * Instantiates a new incognito algorithm.
      * @param lattice
@@ -61,8 +61,19 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
      * @param snapshotSizeDataset
      * @param snapshotSizeSnapshot
      */
-    public AlgorithmIncognito(Lattice lattice, DataManager manager, Metric<?> metric, ARXConfigurationInternal config, int historySize, double snapshotSizeDataset, double snapshotSizeSnapshot) {
-        this(lattice, metric, new IncognitoNodeChecker(manager, Metric.createHeightMetric(), config, historySize, snapshotSizeDataset, snapshotSizeSnapshot));
+    public AlgorithmIncognito(Lattice lattice,
+                              DataManager manager,
+                              Metric<?> metric,
+                              ARXConfigurationInternal config,
+                              int historySize,
+                              double snapshotSizeDataset,
+                              double snapshotSizeSnapshot) {
+        this(lattice, metric, new IncognitoNodeChecker(manager,
+                                                       Metric.createHeightMetric(),
+                                                       config,
+                                                       historySize,
+                                                       snapshotSizeDataset,
+                                                       snapshotSizeSnapshot));
     }
 
     /**
@@ -87,12 +98,12 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
     public void traverse() {
 
         // Prepare
-        IncognitoLattice globalLattice = new IncognitoLattice(super.lattice);
+        IncognitoLattice globalLattice = new IncognitoLattice(super.lattice, hierarchyHeights);
         IncognitoNodeChecker checker = (IncognitoNodeChecker) super.checker;
-        int numQIs = globalLattice.getLattice().getMaximumGeneralizationLevels().length;
+        int numQIs = hierarchyHeights.length;
         Set<Set<Integer>>[] combinations = getCombinations(numQIs);
         IncognitoContext context = new IncognitoContext();
-        
+
         // For subset of QIs of any possible size
         for (int i = 0; i < numQIs; i++) {
 
@@ -150,10 +161,10 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
 
         // For each level
         for (Node[] localLevels : context.getLevels()) {
-            
+
             // For each transformation
             for (Node localNode : localLevels) {
-                
+
                 // If it is not tagged already
                 if (!isTagged(localNode)) {
 
@@ -163,13 +174,13 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
                     // Check
                     context.getLocalLattice().setChecked(localNode, check(checker, globalNode));
                     tag(context.getLocalLattice(), localNode);
-                    
+
                     // And tag
                     if (!isAnonymous(localNode)) {
                         context.getNonAnonymousNodes().add(localNode);
                         context.getNonAnonymousTransformations().add(subset);
                     }
-                    
+
                     // Track optimum
                     if (context.getLattice() == globalLattice) {
                         trackOptimum(globalNode);
@@ -210,7 +221,7 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
         if (successor) {
             rollups++;
         }
-        
+
         // Return
         return result;
     }
@@ -247,7 +258,7 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
      * @return
      */
     private Node getGlobalNode(IncognitoLattice lattice, int[] subset, Node node) {
-        int[] representative = new int[lattice.getLattice().getMaximumGeneralizationLevels().length];
+        int[] representative = new int[hierarchyHeights.length];
         for (int j = 0; j < subset.length; j++) {
             representative[subset[j]] = node.getTransformation()[j];
         }
@@ -265,10 +276,10 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
         int[] min = new int[subset.length];
         int[] height = new int[subset.length];
         for (int i = 0; i < max.length; i++) {
-            height[i] = lattice.getMaximumGeneralizationLevels()[subset[i]];
-            max[i] = lattice.getMaximumGeneralizationLevels()[subset[i]] - 1;
+            height[i] = hierarchyHeights[subset[i]];
+            max[i] = hierarchyHeights[subset[i]] - 1;
         }
-        return new IncognitoLattice(new LatticeBuilder(max, min, height).build());
+        return new IncognitoLattice(new LatticeBuilder(max, min).build(), hierarchyHeights);
     }
 
     /**
@@ -277,15 +288,15 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
      * @return
      */
     private int[] getOrderedArray(Set<Integer> combination) {
-      int[] subset = new int[combination.size()];
-      int pos = 0;
-      for (int k : combination) {
-          subset[pos++] = k;
-      }
-      Arrays.sort(subset);
-      return subset;
+        int[] subset = new int[combination.size()];
+        int pos = 0;
+        for (int k : combination) {
+            subset[pos++] = k;
+        }
+        Arrays.sort(subset);
+        return subset;
     }
-    
+
     /**
      * Returns the power set of all numbers between 0 and maximum-1
      * 
@@ -299,7 +310,7 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
         }
         return getPowerSet(set);
     }
-    
+
     /**
      * Returns the power set of the given set
      * 
@@ -359,11 +370,11 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
      * @param currentSubset
      */
     private void prune(IncognitoContext context, int[] currentSubset) {
-        
+
         // Prepare
         ArrayList<Node> nodes = context.getNonAnonymousNodes();
         ArrayList<int[]> transformations = context.getNonAnonymousTransformations();
-        
+
         // For each transformation that was determined to be non-anonymous previously
         for (int i = 0; i < nodes.size(); i++) {
 

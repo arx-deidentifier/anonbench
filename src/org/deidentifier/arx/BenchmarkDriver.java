@@ -151,8 +151,7 @@ public class BenchmarkDriver {
 
         // Build or clean the lattice
         Lattice lattice = new LatticeBuilder(manager.getMaxLevels(),
-                                             manager.getMinLevels(),
-                                             manager.getHierachyHeights()).build();
+                                             manager.getMinLevels()).build();
 
         // Build a node checker, for all algorithms but Incognito
         INodeChecker checker = null;

@@ -1,7 +1,7 @@
 /*
- * Source code of our CBMS 2014 paper "A benchmark of globally-optimal 
- *      methods for the de-identification of biomedical data"
- *      
+ * Source code of our CBMS 2014 paper "A benchmark of globally-optimal
+ * methods for the de-identification of biomedical data"
+ * 
  * Copyright (C) 2014 Florian Kohlmayer, Fabian Prasser
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -32,7 +32,7 @@ import org.deidentifier.arx.framework.lattice.Node;
 public class IncognitoLattice {
 
     /** The lattice. */
-    private final Lattice           lattice;
+    private final Lattice lattice;
 
     /** The map. */
     private final NodeMap map;
@@ -41,10 +41,11 @@ public class IncognitoLattice {
      * Instantiates a new lattice incognito.
      * 
      * @param lattice the lattice
+     * @param hierarchyHeights TODO
      */
-    public IncognitoLattice(final Lattice lattice) {
+    public IncognitoLattice(final Lattice lattice, int[] hierarchyHeights) {
         this.lattice = lattice;
-        map = new NodeMap(lattice.getMaximumGeneralizationLevels());
+        map = new NodeMap(hierarchyHeights);
         for (int i = 0; i < lattice.getLevels().length; i++) {
             final Node[] nodes = lattice.getLevels()[i];
             for (int j = 0; j < nodes.length; j++) {

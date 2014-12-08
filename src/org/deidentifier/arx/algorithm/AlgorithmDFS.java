@@ -1,7 +1,7 @@
 /*
- * Source code of our CBMS 2014 paper "A benchmark of globally-optimal 
- *      methods for the de-identification of biomedical data"
- *      
+ * Source code of our CBMS 2014 paper "A benchmark of globally-optimal
+ * methods for the de-identification of biomedical data"
+ * 
  * Copyright (C) 2014 Florian Kohlmayer, Fabian Prasser
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -73,7 +73,7 @@ public class AlgorithmDFS extends AbstractBenchmarkAlgorithm {
             check(node);
             tag(node);
         }
-        
+
         // DFS
         for (final Node child : node.getSuccessors()) {
             if (!isTagged(child)) {
