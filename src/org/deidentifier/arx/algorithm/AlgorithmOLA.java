@@ -1,7 +1,7 @@
 /*
- * Source code of our CBMS 2014 paper "A benchmark of globally-optimal 
- *      methods for the de-identification of biomedical data"
- *      
+ * Source code of our CBMS 2014 paper "A benchmark of globally-optimal
+ * methods for the de-identification of biomedical data"
+ * 
  * Copyright (C) 2014 Florian Kohlmayer, Fabian Prasser
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -44,19 +44,19 @@ import org.deidentifier.arx.framework.lattice.Node;
 public class AlgorithmOLA extends AbstractBenchmarkAlgorithm {
 
     /** The bitset. */
-    public OLAFastBitSet[]       memoization      = null;
+    public OLAFastBitSet[] memoization = null;
 
     /** The levelmask. */
-    private long                 levelmask        = 0;
+    private long           levelmask   = 0;
 
     /** The map. */
-    private NodeMap    map              = null;
+    private NodeMap        map         = null;
 
     /** The untagged count. */
-    private int[]                untagged         = null;
+    private int[]          untagged    = null;
 
     /** The count. */
-    int                          count            = 0;
+    int                    count       = 0;
 
     /**
      * Instantiates a new OLA algorithm.
@@ -65,11 +65,11 @@ public class AlgorithmOLA extends AbstractBenchmarkAlgorithm {
      * @param checker the checker
      */
     public AlgorithmOLA(final Lattice lattice, final INodeChecker checker) {
-        
+
         super(lattice, checker);
 
         // Init the map
-        map = new NodeMap(lattice.getMaximumGeneralizationLevels());
+        map = new NodeMap(hierarchyHeights);
         final Node[][] levels = lattice.getLevels();
         for (int i = 0; i < levels.length; i++) {
             final Node[] nodes = levels[i];
@@ -86,7 +86,7 @@ public class AlgorithmOLA extends AbstractBenchmarkAlgorithm {
         for (int i = 0; i < memoization.length; i++) {
             memoization[i] = new OLAFastBitSet(memoization.length + 1);
         }
-        
+
         // Set strategy
         checker.getHistory().setStorageTrigger(History.STORAGE_TRIGGER_NON_ANONYMOUS);
     }
@@ -109,7 +109,9 @@ public class AlgorithmOLA extends AbstractBenchmarkAlgorithm {
      */
     public boolean levelsNotPruned(final int top, final int bottom) {
         final long mask = ((2L << top) - 1L) ^ ((2L << (bottom)) - 1L) ^ (1L << top);
-        if ((mask & levelmask) == mask) { return false; }
+        if ((mask & levelmask) == mask) {
+            return false;
+        }
         return true;
     }
 

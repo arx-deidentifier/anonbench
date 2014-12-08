@@ -30,12 +30,14 @@ import org.deidentifier.arx.framework.lattice.Node;
  */
 public abstract class AbstractBenchmarkAlgorithm extends AbstractAlgorithm {
 
-    /** The number of rollups that could have been performed*/
-    protected int  rollups;
-    /** The number of checks*/
-    protected int  checks;
-    /** The node checked previously*/
-    protected Node previous;
+    /** The number of rollups that could have been performed */
+    protected int   rollups;
+    /** The number of checks */
+    protected int   checks;
+    /** The node checked previously */
+    protected Node  previous;
+    /** The hierarchy heights for each QI. */
+    protected int[] hierarchyHeights;
 
     /**
      * Constructor
@@ -44,6 +46,10 @@ public abstract class AbstractBenchmarkAlgorithm extends AbstractAlgorithm {
      */
     protected AbstractBenchmarkAlgorithm(Lattice lattice, INodeChecker checker) {
         super(lattice, checker);
+        this.hierarchyHeights = lattice.getTop().getTransformation().clone();
+        for (int i=0; i<hierarchyHeights.length; i++) {
+            this.hierarchyHeights[i]++;
+        }
     }
 
     /**
@@ -61,7 +67,7 @@ public abstract class AbstractBenchmarkAlgorithm extends AbstractAlgorithm {
     public int getNumRollups() {
         return rollups;
     }
-    
+
     /**
      * Performs a check and keeps track of potential rollups
      * @param node
@@ -94,6 +100,7 @@ public abstract class AbstractBenchmarkAlgorithm extends AbstractAlgorithm {
             rollups++;
         }
     }
+
     /**
      * Returns whether the transformation represented by the node was
      * determined to be anonymous. Returns <code>null</code> if such information
@@ -110,7 +117,7 @@ public abstract class AbstractBenchmarkAlgorithm extends AbstractAlgorithm {
             return null;
         }
     }
-    
+
     /**
      * Returns whether the node has been tagged already
      * @param node
@@ -120,7 +127,7 @@ public abstract class AbstractBenchmarkAlgorithm extends AbstractAlgorithm {
         return node.hasProperty(Node.PROPERTY_ANONYMOUS) ||
                node.hasProperty(Node.PROPERTY_NOT_ANONYMOUS);
     }
-    
+
     /**
      * Tags a transformation
      * @param node
@@ -134,7 +141,7 @@ public abstract class AbstractBenchmarkAlgorithm extends AbstractAlgorithm {
             lattice.setProperty(node, Node.PROPERTY_NOT_ANONYMOUS);
         }
     }
-    
+
     /**
      * Tags a transformation
      * @param node
@@ -143,13 +150,13 @@ public abstract class AbstractBenchmarkAlgorithm extends AbstractAlgorithm {
     protected void setAnonymous(Node node, boolean anonymous) {
         setAnonymous(lattice, node, anonymous);
     }
-    
+
     /**
      * Predictively tags the search space with the node's anonymity property
      * @param node
      * @param lattice
      */
-    protected void tag(Lattice lattice, Node node){
+    protected void tag(Lattice lattice, Node node) {
         if (node.hasProperty(Node.PROPERTY_ANONYMOUS)) {
             tagAnonymous(lattice, node);
         }
@@ -162,7 +169,7 @@ public abstract class AbstractBenchmarkAlgorithm extends AbstractAlgorithm {
      * Predictively tags the search space with the node's anonymity property
      * @param node
      */
-    protected void tag(Node node){
+    protected void tag(Node node) {
         tag(lattice, node);
     }
 
@@ -175,7 +182,7 @@ public abstract class AbstractBenchmarkAlgorithm extends AbstractAlgorithm {
         lattice.setPropertyUpwards(node, true, Node.PROPERTY_ANONYMOUS |
                                                Node.PROPERTY_SUCCESSORS_PRUNED);
     }
-    
+
     /**
      * Predictively tags the search space from an anonymous transformation
      * @param node
@@ -183,7 +190,7 @@ public abstract class AbstractBenchmarkAlgorithm extends AbstractAlgorithm {
     protected void tagAnonymous(Node node) {
         tagAnonymous(lattice, node);
     }
-    
+
     /**
      * Predictively tags the search space from a non-anonymous transformation
      * @param node
@@ -192,7 +199,7 @@ public abstract class AbstractBenchmarkAlgorithm extends AbstractAlgorithm {
     protected void tagNotAnonymous(Lattice lattice, Node node) {
         lattice.setPropertyDownwards(node, false, Node.PROPERTY_NOT_ANONYMOUS);
     }
-    
+
     /**
      * Predictively tags the search space from a non-anonymous transformation
      * @param node
