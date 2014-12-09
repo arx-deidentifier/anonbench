@@ -279,7 +279,7 @@ public class AlgorithmIncognito extends AbstractBenchmarkAlgorithm {
             height[i] = hierarchyHeights[subset[i]];
             max[i] = hierarchyHeights[subset[i]] - 1;
         }
-        return new IncognitoLattice(new LatticeBuilder(max, min).build(), hierarchyHeights);
+        return new IncognitoLattice(new LatticeBuilder(max, min).build(), height);
     }
 
     /**

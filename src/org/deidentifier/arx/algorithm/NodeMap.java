@@ -57,19 +57,6 @@ public class NodeMap {
     }
 
     /**
-     * Instantiates a new lattice node map.
-     * 
-     * @param array the array
-     * @param offsets the offsets
-     * @param max the max indices
-     */
-    public NodeMap(final Node[] array, final int[] offsets, final int[] max) {
-        this.offsets = offsets;
-        this.array = array;
-        this.max = max;
-    }
-
-    /**
      * Gets the.
      * 
      * @param key the key
