@@ -27,6 +27,7 @@ import org.deidentifier.arx.criteria.DPresence;
 import org.deidentifier.arx.criteria.HierarchicalDistanceTCloseness;
 import org.deidentifier.arx.criteria.KAnonymity;
 import org.deidentifier.arx.criteria.RecursiveCLDiversity;
+import org.deidentifier.arx.metric.Metric;
 
 /**
  * This class encapsulates most of the parameters of a benchmark run
@@ -149,7 +150,11 @@ public class BenchmarkSetup {
      * @throws IOException
      */
     public static ARXConfiguration getConfiguration(BenchmarkDataset dataset, BenchmarkCriterion... criteria) throws IOException {
+        
         ARXConfiguration config = ARXConfiguration.create();
+        config.setMetric(Metric.createEntropyMetric(true));
+        config.setMaxOutliers(0d);
+        
         for (BenchmarkCriterion c : criteria) {
             switch (c) {
             case D_PRESENCE:
